@@ -7,6 +7,8 @@
 
 /* Core Style */
 
+/* TERRAIN */
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(20, 54px);
@@ -17,22 +19,37 @@
   height: 54px;
 }
 
-.type-G {
-  background-color:aquamarine; /* grass */
+.type-G { /* grass */
+  /*background-color:aquamarine;*/
+  background-image: url('../src/assets/terrain/terrain-grass.png');
 }
 
-.type-F {
-  background-color:darkolivegreen; /* forest */
+.type-F { /* forest */
+  /* background-color:darkolivegreen;  */
+  background-image: url('../src/assets/terrain/arvore-01.png'), url('../src/assets/terrain/terrain-grass.png');
 }
 
-.type-M {
-  background-color:brown; /* mountain */
+.type-M { /* mountain */
+  /* background-color:brown; */
+  background-image: url('../src/assets/terrain/terrain-mountain.png'), url('../src/assets/terrain/terrain-grass.png');
 }
 
-.type-S {
-  background-color:khaki; /* sand */
+.type-S { /* sand */
+  /* background-color:khaki;  */
+  background-image: url('../src/assets/terrain/terrain-sand.png');
 }
 
-.type-W {
-  background-color:blue; /* waves */
+.type-W { /* waves */
+  /* background-color:blue;  */
+  background-image: url('../src/assets/terrain/terrain-water.gif');
+}
+
+/* BASES */
+
+.human-city {
+  background-image: url('../src/assets/bases/human_city.png');
+}
+
+.orc-city {
+  background-image: url('../src/assets/bases/orc_city.png');
 }

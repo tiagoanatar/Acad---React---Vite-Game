@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { generateWave, Map } from '../data/cenario/waveFunctionA';
+import { generateMap, GridItem } from '../data/cenario/sampleBoard';
 
 export const Main = () => {
 
@@ -16,14 +16,14 @@ export const Main = () => {
   //     window.removeEventListener('beforeunload', handleBeforeUnload);
   //   };
   // }, []);
-  const [ map ]  = useState(generateWave())
+  const [ map ]  = useState(generateMap())
 
   return (
     <div className='grid-container'>
       {map.length > 0 &&
-        map.map((row: any) =>
-          row.map((cell: any) => (
-            <div key={cell.id} className={`grid-item type-${cell.final.type}`}></div>
+        map.map((row: GridItem[], y) =>
+          row.map((cell: GridItem, x:number) => (
+            <div key={y+"-"+x} className={`grid-item type-${cell.terrain} ${cell.control.race}-${cell.control.baseType}`}></div>
           ))
         )}
     </div>

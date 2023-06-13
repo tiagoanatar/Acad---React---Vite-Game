@@ -1,3 +1,5 @@
+import { STORE } from '../store';
+
 //////////////////////////////////////////
 // VARS
 //////////////////////////////////////////
@@ -20,8 +22,8 @@ export interface Map {
   collapse: boolean;
 }
 
-const MAP_SIZE_X = 20;
-const MAP_SIZE_Y = 20;
+const MAP_SIZE_X = STORE.combatMap.size;
+const MAP_SIZE_Y = STORE.combatMap.size;
 const map: Map[] | any = []
 // [
 //   {
@@ -402,6 +404,6 @@ function main_while() {
 export function generateWave() {
   map_load();
   main_while();
-  console.log(map);
+  //console.log(map);
   return map;
 }
