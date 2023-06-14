@@ -16,13 +16,24 @@ export const Main = () => {
   //     window.removeEventListener('beforeunload', handleBeforeUnload);
   //   };
   // }, []);
-  const [ map ]  = useState(generateMap())
+
+  // Map
+  const [ map, setMap ] = useState(generateMap())
+
+  // Bases
+  function initialValue() {
+    return {
+      player: [],
+      enemy: []
+    }
+  }
+  const [ bases, setBases ] = useState(initialValue());
 
   return (
     <div className='grid-container'>
       {map.length > 0 &&
         map.map((row: GridItem[], y) =>
-          row.map((cell: GridItem, x:number) => (
+          row.map((cell: GridItem, x) => (
             <div key={y+"-"+x} className={`grid-item type-${cell.terrain} ${cell.control.race}-${cell.control.baseType}`}></div>
           ))
         )}

@@ -46,10 +46,18 @@
 
 /* BASES */
 
-.human-city {
-  background-image: url('../src/assets/bases/human_city.png');
+.type-S.human-city {
+  background-image: url('../src/assets/bases/human_city.png'), url('../src/assets/terrain/terrain-sand.png');
 }
 
-.orc-city {
-  background-image: url('../src/assets/bases/orc_city.png');
+.type-G.human-city {
+  background-image: url('../src/assets/bases/human_city.png'), url('../src/assets/terrain/terrain-grass.png');
+}
+
+.type-S.orc-city {
+  background-image: url('../src/assets/bases/orc_city.png'), url('../src/assets/terrain/terrain-sand.png');
+}
+
+.type-G.orc-city {
+  background-image: url('../src/assets/bases/orc_city.png'), url('../src/assets/terrain/terrain-grass.png');
 }
