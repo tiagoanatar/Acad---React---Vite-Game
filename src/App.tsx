@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import viteLogo from "/vite.svg";
 // Routes
 import { WaveTest } from "./components/WaveTest";
 import { Main } from "./components/Main";

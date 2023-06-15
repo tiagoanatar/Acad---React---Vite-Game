@@ -1,11 +1,11 @@
-import { generateWave } from "./waveFunctionA";
-import { STORE } from "../store";
+import { generateWave } from './waveFunctionA';
+import { STORE } from '../store';
+import { BaseType, ArmyType } from '../types';
 
-type Terrain = "grass" | "sand" | "sea";
-type WaveTerrain = "G" | "S" | "M" | "F" | "W";
-type AboveTerrain = "mountain" | "forest" | "";
-type Base = "city" | "castle" | "temple" | "";
-type Race = "human" | "orc" | "";
+type Terrain = 'grass' | 'sand' | 'sea';
+type WaveTerrain = 'G' | 'S' | 'M' | 'F' | 'W';
+type AboveTerrain = 'mountain' | 'forest' | '';
+type Race = 'human' | 'orc' | '';
 
 export interface GridItem {
   id: string;
@@ -14,27 +14,29 @@ export interface GridItem {
   x: number;
   y: number;
   control: {
-    playerControl: number;
+    faction: number;
     race: Race;
     armyId: string;
-    baseType: Base;
+    armyType: ArmyType;
+    baseType: BaseType;
     baseId: string;
   };
 }
 
 function gridItem(): GridItem {
   return {
-    id: "",
-    terrain: "G",
-    aboveTerrain: "",
+    id: '',
+    terrain: 'G',
+    aboveTerrain: '',
     x: 0,
     y: 0,
     control: {
-      playerControl: 0,
-      race: "",
-      armyId: "",
-      baseType: "",
-      baseId: "",
+      faction: 0,
+      race: '',
+      armyId: '',
+      armyType: '',
+      baseType: '',
+      baseId: '',
     },
   };
 }
@@ -57,19 +59,19 @@ export function generateMap() {
 
         newItem.x = x;
         newItem.y = y;
-        newItem.id = y + "-" + x;
+        newItem.id = y + '-' + x;
         newItem.terrain = waveData[y][x].final.type;
         map[y][x] = newItem;
 
         // Save G(grass) or S(sand) in a array for future search
-        if (newItem.terrain === "G" || newItem.terrain === "S") {
+        if (newItem.terrain === 'G' || newItem.terrain === 'S') {
           basesPossibleTerrain.push(newItem);
         }
       }
     }
   }
 
-  // Select player/enemy base
+  // Select player/enemy staring base
   function selectRandomValue() {
     const res =
       basesPossibleTerrain[
@@ -99,15 +101,33 @@ export function generateMap() {
       selectPlayersPosition();
     } else {
       // Player
-      map[player.y][player.x].control.playerControl = 0;
-      map[player.y][player.x].control.baseType = "city";
-      map[player.y][player.x].control.race = "human";
+      map[player.y][player.x].control.faction = 0;
+      map[player.y][player.x].control.baseType = 'city';
+      map[player.y][player.x].control.race = 'human';
 
       // Enemy
-      map[enemy.y][enemy.x].control.playerControl = 1;
-      map[enemy.y][enemy.x].control.baseType = "city";
-      map[enemy.y][enemy.x].control.race = "orc";
+      map[enemy.y][enemy.x].control.faction = 1;
+      map[enemy.y][enemy.x].control.baseType = 'city';
+      map[enemy.y][enemy.x].control.race = 'orc';
+
+      // Set first army location
+      armyFirstLocation({player, enemy});
     }
+  }
+
+  // Set first army location
+  function armyFirstLocation(positions: {player: GridItem, enemy: GridItem}){
+    const { player, enemy } = positions;
+
+    // Player
+    map[player.y][player.x+1].control.faction = 0;
+    map[player.y][player.x+1].control.armyType = 'knight';
+    map[player.y][player.x+1].control.race = 'human';
+
+    // Enemy
+    map[enemy.y][enemy.x+1].control.faction = 1;
+    map[enemy.y][enemy.x+1].control.armyType = 'knight';
+    map[enemy.y][enemy.x+1].control.race = 'orc';
   }
 
   if (map.length === 0) {

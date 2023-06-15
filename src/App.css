@@ -1,18 +1,34 @@
 #root {
-  max-width: 1280px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
-/* Core Style */
+/*---------------------------------*/
+/*---------------------------------*/
+/* CORE STYLES */
+/*---------------------------------*/
+/*---------------------------------*/
+
+.main-container {
+  position: relative;
+}
+
+.grid-container-over-a {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: aquamarine;
+  opacity: 0.5;
+}
 
 /* TERRAIN */
 
 .grid-container {
   display: grid;
   grid-template-columns: repeat(20, 54px);
-  grid-gap: 0px; /* optional: add gap between grid cells */
+  grid-gap: 0px; 
 }
 
 .grid-item {
@@ -44,7 +60,46 @@
   background-image: url('../src/assets/terrain/terrain-water.gif');
 }
 
+/*---------------------------------*/
+/*---------------------------------*/
+/* UNITS */
+/*---------------------------------*/
+/*---------------------------------*/
+
+.life-bar {
+  height: 6px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  transition: 1s;
+}
+
 /* BASES */
+
+.base {
+  position: relative;
+}
+
+.base:hover .life-bar {
+  opacity: 1;
+}
+
+.base-0-city {
+  background-image: url('../src/assets/bases/human_city.png');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.base-1-city {
+  background-image: url('../src/assets/bases/orc_city.png');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/**/
 
 .type-S.human-city {
   background-image: url('../src/assets/bases/human_city.png'), url('../src/assets/terrain/terrain-sand.png');
@@ -60,4 +115,28 @@
 
 .type-G.orc-city {
   background-image: url('../src/assets/bases/orc_city.png'), url('../src/assets/terrain/terrain-grass.png');
+}
+
+/* ARMY */
+
+.army {
+  position: relative;
+}
+
+.army:hover .life-bar {
+  opacity: 1;
+}
+
+.army-0-knight {
+  background-image: url('../src/assets/player/human-knight-01.gif');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.army-1-knight {
+  background-image: url('../src/assets/player/orc-knight-01.gif');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 }

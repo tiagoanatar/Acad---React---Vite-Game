@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { generateMap, GridItem } from '../data/cenario/sampleBoard';
+import { Map } from './Map';
 
 export const Main = () => {
 
@@ -30,13 +31,6 @@ export const Main = () => {
   const [ bases, setBases ] = useState(initialValue());
 
   return (
-    <div className='grid-container'>
-      {map.length > 0 &&
-        map.map((row: GridItem[], y) =>
-          row.map((cell: GridItem, x) => (
-            <div key={y+"-"+x} className={`grid-item type-${cell.terrain} ${cell.control.race}-${cell.control.baseType}`}></div>
-          ))
-        )}
-    </div>
+    <Map map={map} setMap={setMap} />
   );
 };
