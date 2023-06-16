@@ -1,11 +1,11 @@
 import { generateWave } from './waveFunctionA';
 import { STORE } from '../store';
-import { BaseType, ArmyType } from '../types';
+import { ArmyPropsWithoutSelect } from '../../components/Army';
+import { BasePropsWithoutSelect } from '../../components/Base';
 
 type Terrain = 'grass' | 'sand' | 'sea';
 type WaveTerrain = 'G' | 'S' | 'M' | 'F' | 'W';
 type AboveTerrain = 'mountain' | 'forest' | '';
-type Race = 'human' | 'orc' | '';
 
 export interface GridItem {
   id: string;
@@ -13,14 +13,8 @@ export interface GridItem {
   aboveTerrain: AboveTerrain; // TODO: Keep or delete?
   x: number;
   y: number;
-  control: {
-    faction: number;
-    race: Race;
-    armyId: string;
-    armyType: ArmyType;
-    baseType: BaseType;
-    baseId: string;
-  };
+  army: ArmyPropsWithoutSelect[];
+  base: BasePropsWithoutSelect[];
 }
 
 function gridItem(): GridItem {
@@ -30,14 +24,8 @@ function gridItem(): GridItem {
     aboveTerrain: '',
     x: 0,
     y: 0,
-    control: {
-      faction: 0,
-      race: '',
-      armyId: '',
-      armyType: '',
-      baseType: '',
-      baseId: '',
-    },
+    army: [],
+    base: []
   };
 }
 
@@ -101,14 +89,30 @@ export function generateMap() {
       selectPlayersPosition();
     } else {
       // Player
-      map[player.y][player.x].control.faction = 0;
-      map[player.y][player.x].control.baseType = 'city';
-      map[player.y][player.x].control.race = 'human';
+      map[player.y][player.x].base[0] = {
+        id: 'human-base-1',
+        faction: 0,
+        race: 'human',
+        type: 'city',
+        life: 55,
+        lifeRef: 80,
+        rank: 0,
+        y: player.y,
+        x: player.x
+      }
 
       // Enemy
-      map[enemy.y][enemy.x].control.faction = 1;
-      map[enemy.y][enemy.x].control.baseType = 'city';
-      map[enemy.y][enemy.x].control.race = 'orc';
+      map[enemy.y][enemy.x].base[0] = {
+        id: 'orc-base-1',
+        faction: 1,
+        race: 'orc',
+        type: 'city',
+        life: 74,
+        lifeRef: 80,
+        rank: 0,
+        y: enemy.y,
+        x: enemy.x
+      }
 
       // Set first army location
       armyFirstLocation({player, enemy});
@@ -120,14 +124,30 @@ export function generateMap() {
     const { player, enemy } = positions;
 
     // Player
-    map[player.y][player.x+1].control.faction = 0;
-    map[player.y][player.x+1].control.armyType = 'knight';
-    map[player.y][player.x+1].control.race = 'human';
+    map[player.y][player.x+1].army[0] = {
+      id: 'human-knight-1',
+      faction: 0,
+      race: 'human',
+      type: 'knight',
+      life: 55,
+      lifeRef: 80,
+      rank: 0,
+      y: player.y,
+      x: player.x+1
+    }
 
     // Enemy
-    map[enemy.y][enemy.x+1].control.faction = 1;
-    map[enemy.y][enemy.x+1].control.armyType = 'knight';
-    map[enemy.y][enemy.x+1].control.race = 'orc';
+    map[enemy.y][enemy.x+1].army[0] = {
+      id: 'orc-knight-1',
+      faction: 0,
+      race: 'orc',
+      type: 'knight',
+      life: 74,
+      lifeRef: 80,
+      rank: 0,
+      y: enemy.y,
+      x: enemy.x+1
+    }
   }
 
   if (map.length === 0) {
@@ -135,5 +155,5 @@ export function generateMap() {
     selectPlayersPosition();
   }
 
-  return map;
+  return map.flat(2);
 }

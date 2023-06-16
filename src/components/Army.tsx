@@ -1,9 +1,11 @@
 import { convertToPercentage } from '../utils';
 import { ArmyType } from '../data/types';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export interface ArmyProps {
+  id: string;
   faction: number;
+  race: string;
   type: ArmyType;
   life: number;
   lifeRef: number;
@@ -13,8 +15,12 @@ export interface ArmyProps {
   setArmySelect: ({ y, x }: { y: number; x: number; active: boolean }) => void;
 }
 
+export type ArmyPropsWithoutSelect = Omit<ArmyProps, 'setArmySelect'>
+
 export const Army = ({
+  id,
   faction,
+  race,
   type,
   life,
   lifeRef,
@@ -23,7 +29,6 @@ export const Army = ({
   x,
   setArmySelect,
 }: ArmyProps) => {
-  const [ pos, setPos ] = useState({y: 0, x: 0});
   const currentLife = convertToPercentage(lifeRef, life);
 
   useEffect(() => {
@@ -68,9 +73,8 @@ export const Army = ({
 
   return (
     <div
-      className={`army army-${faction}-${type}`}
+      className={`army army-${race}-${type}`}
       onClick={() => setArmySelect({ y, x, active: true })}
-      style={{ top: y, left: x }}
     >
       <div
         style={{

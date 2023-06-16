@@ -150,14 +150,14 @@
   opacity: 1;
 }
 
-.army-0-knight {
+.army-human-knight {
   background-image: url('../src/assets/player/human-knight-01.gif');
   background-size: cover;
   width: 100%;
   height: 100%;
 }
 
-.army-1-knight {
+.army-orc-knight {
   background-image: url('../src/assets/player/orc-knight-01.gif');
   background-size: cover;
   width: 100%;

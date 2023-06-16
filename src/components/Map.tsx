@@ -1,16 +1,17 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { GridItem } from "../data/cenario/sampleBoard";
 import { calculateDistance } from "../utils";
-import { Army, ArmyProps } from "./Army";
+import { Army } from "./Army";
 import { Base, BaseProps } from "./Base";
 
 interface Props {
-  map: GridItem[][];
-  setMap: Dispatch<SetStateAction<GridItem[][]>>;
+  map: GridItem[];
+  setMap: Dispatch<SetStateAction<GridItem[]>>;
 }
 
 export const Map = ({ map, setMap }: Props) => {
   const [armySelect, setArmySelect] = useState({ y: 0, x: 0, active: false });
+  const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
 
   const checkRange = (y: number, x: number) => {
     return calculateDistance(armySelect.x, armySelect.y, x, y) < 4 ? true : false;
@@ -21,8 +22,7 @@ export const Map = ({ map, setMap }: Props) => {
       <div className="grid-container-over-a"></div>
       <div className="grid-container">
         {map.length > 0 &&
-          map.map((row: GridItem[]) =>
-            row.map((cell: GridItem) => (
+            map.map((cell: GridItem) => (
               <div
                 key={cell.id}
                 id={cell.id}
@@ -34,32 +34,37 @@ export const Map = ({ map, setMap }: Props) => {
                 )}
                 {/* ------------------ */}
 
-                {cell.control.armyType && (
+                {cell.army.length > 0 && (
                   <Army
-                    faction={cell.control.faction}
-                    life={12}
-                    lifeRef={55}
-                    rank={0}
-                    type={cell.control.armyType}
-                    y={cell.y}
-                    x={cell.x}
+                    id={cell.army[0].id}
+                    faction={cell.army[0].faction}
+                    race={cell.army[0].race}
+                    life={cell.army[0].life}
+                    lifeRef={cell.army[0].life}
+                    rank={cell.army[0].rank}
+                    type={cell.army[0].type}
+                    y={cell.army[0].y}
+                    x={cell.army[0].x}
                     setArmySelect={setArmySelect}
                   />
                 )}
-                {cell.control.baseType && (
+                {cell.base.length > 0 && (
                   <Base
-                    faction={cell.control.faction}
-                    life={32}
-                    lifeRef={70}
-                    rank={0}
-                    type={cell.control.baseType}
-                    y={cell.y}
-                    x={cell.x}
+                    id={cell.base[0].id}
+                    faction={cell.base[0].faction}
+                    race={cell.base[0].race}
+                    life={cell.base[0].life}
+                    lifeRef={cell.base[0].life}
+                    rank={cell.base[0].rank}
+                    type={cell.base[0].type}
+                    y={cell.base[0].y}
+                    x={cell.base[0].x}
+                    setBaseSelect={setBaseSelect}
                   />
                 )}
               </div>
             ))
-          )}
+          }
       </div>
     </div>
   );

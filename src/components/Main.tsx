@@ -20,7 +20,7 @@ export const Main = () => {
 
   // Map
   const [ map, setMap ] = useState(generateMap())
-
+  console.log(map);
   // Bases
   function initialValue() {
     return {
