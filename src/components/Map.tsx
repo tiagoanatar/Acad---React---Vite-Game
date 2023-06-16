@@ -40,7 +40,7 @@ export const Map = ({ map, setMap }: Props) => {
                     faction={cell.army[0].faction}
                     race={cell.army[0].race}
                     life={cell.army[0].life}
-                    lifeRef={cell.army[0].life}
+                    lifeRef={cell.army[0].lifeRef}
                     rank={cell.army[0].rank}
                     type={cell.army[0].type}
                     y={cell.army[0].y}
@@ -54,7 +54,7 @@ export const Map = ({ map, setMap }: Props) => {
                     faction={cell.base[0].faction}
                     race={cell.base[0].race}
                     life={cell.base[0].life}
-                    lifeRef={cell.base[0].life}
+                    lifeRef={cell.base[0].lifeRef}
                     rank={cell.base[0].rank}
                     type={cell.base[0].type}
                     y={cell.base[0].y}
