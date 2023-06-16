@@ -19,8 +19,28 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
   opacity: 0.5;
+  z-index: 0;
+}
+
+@keyframes fade {
+  0% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  100% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+}
+
+.range-block {
+  position: absolute;
+  animation: fade 2s infinite;
+  width: 100%;
+  height: 100%;
 }
 
 /* TERRAIN */
@@ -29,10 +49,13 @@
   display: grid;
   grid-template-columns: repeat(20, 54px);
   grid-gap: 0px; 
+  z-index: 3;
 }
 
 .grid-item {
+  width: 54px;
   height: 54px;
+  position: relative;
 }
 
 .type-G { /* grass */
