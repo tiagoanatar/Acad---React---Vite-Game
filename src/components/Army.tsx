@@ -100,8 +100,8 @@ export const Army = ({
     <div
       className={`army army-${race}-${type}`}
       onClick={() => handleArmySelection()}
+      id={`${type}-${y}-${x}`}
     >
-      {index}
       <div
         style={{
           background: `linear-gradient(to right, red ${currentLife}, black ${currentLife})`,

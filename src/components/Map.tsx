@@ -17,26 +17,24 @@ interface ArmySelect {
   copy: ArmyPropsWithoutSelect | null;
 }
 
-// const armySelectInitialState =
+const armySelectInitialState = {
+  y: -1,
+  x: -1,
+  active: false,
+  copy: null,
+};
 
 export const Map = ({ map, setMap }: Props) => {
+  // Current army selected data
   const [armySelect, setArmySelect] = useState<ArmySelect>({
-    y: 0,
-    x: 0,
-    active: false,
-    copy: null,
+    ...armySelectInitialState,
   });
-  const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
 
-  const checkRange = (y: number, x: number) => {
-    return calculateDistance(armySelect.x, armySelect.y, x, y) < 4
-      ? true
-      : false;
-  };
+  // Current base selected data
+  const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
 
   const rangeMap = useMemo(() => {
     const gridPoints = () => {
-      let counter = 1;
       const grid = [...map];
       const stack = [];
       if (!armySelect.copy) return;
@@ -44,46 +42,44 @@ export const Map = ({ map, setMap }: Props) => {
       // Mark player position as already checked
       grid[armySelect.copy.index].rangeCheck = true;
 
-      while (stack.length && counter < 1000) {
-        const currentStack = stack[stack.length - 1];
         for (let i = 0; i < grid.length; i++) {
-          const newRangeValue = calculateDistance(
-            grid[currentStack].x,
-            grid[currentStack].y,
+          grid[i].rangeCheck = true;
+          grid[i].rangeValue = calculateDistance(
+            armySelect.x,
+            armySelect.y,
             grid[i].x,
             grid[i].y
-          )
-          if (
-            newRangeValue === 1 &&
-            !grid[i].rangeCheck
-          ) {
-            stack.push(i);
-            grid[i].rangeCheck = true;
-            grid[i].rangeValue = calculateDistance(armySelect.x, armySelect.y, grid[i].x, grid[i].y);
-          }
-        }
-        stack.shift();
-        counter++;
-      }
-
-      console.log(stack);
+          );
+       }
 
       return grid;
     };
-
     return gridPoints() || [];
   }, [armySelect, map]);
 
   // Army position change
-  const handleArmyPositionChange = (id: string) => {
-    if (armySelect.active && armySelect.copy) {
-      const army: ArmyPropsWithoutSelect = armySelect.copy;
-
+  const handleArmyPositionChange = (
+    id: string,
+    currentArmy: ArmyPropsWithoutSelect[],
+    y: number,
+    x: number
+  ) => {
+    console.log(currentArmy)
+    if (armySelect.active && armySelect.copy && currentArmy.length === 0) {
+      const army: ArmyPropsWithoutSelect = {...armySelect.copy};
       const updatedMap: GridItem[] = map.map((item) => {
         if (item.id === id) {
+          setArmySelect({
+            y: y,
+            x: x,
+            active: true,
+            copy: army,
+          });
           return {
             ...item,
-            army: [{ ...army }], // New army array
+            x: x,
+            y: y,
+            army: [{ ...army, x: x, y: y}], // New army array
           };
         }
         return item;
@@ -93,15 +89,30 @@ export const Map = ({ map, setMap }: Props) => {
   };
   return (
     <div className="main-container">
-      {JSON.stringify(armySelect)}
+      Army Select: {JSON.stringify(armySelect)}
       {/* Army range display */}
       {armySelect.active && (
         <div className="grid-container-over-a">
           <div className="range-map">
             {rangeMap.map((cell) => {
               return (
-                <div className="grid-item">
-                  <div key={cell.id + "range"} className="range-block">
+                <div
+                  key={cell.id + "range"}
+                  className="grid-item"
+                  onClick={() =>
+                    cell.army.length === 0
+                      ? handleArmyPositionChange(cell.id, cell.army, cell.y, cell.x)
+                      : null
+                  }
+                >
+                  <div
+                    className={
+                      armySelect.copy &&
+                      cell.rangeValue < armySelect.copy.rank + 4
+                        ? "range-block"
+                        : ""
+                    }
+                  >
                     {cell.rangeValue}
                   </div>
                 </div>
@@ -110,7 +121,7 @@ export const Map = ({ map, setMap }: Props) => {
           </div>
         </div>
       )}
-      {/* ------------------ */}
+      {/* Main map */}
       <div className="grid-container">
         {map.length > 0 &&
           map.map((cell: GridItem, index) => (
@@ -118,14 +129,7 @@ export const Map = ({ map, setMap }: Props) => {
               key={cell.id}
               id={cell.id}
               className={`grid-item type-${cell.terrain}`}
-              onClick={() => handleArmyPositionChange(cell.id)}
             >
-              {/* Army range display */}
-              {armySelect.active && checkRange(cell.y, cell.x) && (
-                <div className="range-block"></div>
-              )}
-              {/* ------------------ */}
-
               {cell.army.length > 0 && (
                 <Army
                   id={cell.army[0].id}

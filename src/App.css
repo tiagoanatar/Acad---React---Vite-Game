@@ -32,13 +32,13 @@
 
 @keyframes fade {
   0% {
-    background-color: rgba(255, 0, 0, 0.5);
+    background-color: rgba(255, 0, 0, 0.7);
   }
   50% {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: rgba(255, 0, 0, 0.3);
   }
   100% {
-    background-color: rgba(255, 0, 0, 0.5);
+    background-color: rgba(255, 0, 0, 0.7);
   }
 }
 
@@ -56,7 +56,7 @@
   display: grid;
   grid-template-columns: repeat(20, 54px);
   grid-gap: 0px; 
-  z-index: 3;
+  z-index: 5;
 }
 
 .grid-item {
@@ -151,6 +151,7 @@
 
 .army {
   position: relative;
+  z-index: 15;
 }
 
 .army:hover .life-bar {
