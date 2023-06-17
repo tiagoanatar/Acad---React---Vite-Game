@@ -13,6 +13,8 @@ export interface GridItem {
   aboveTerrain: AboveTerrain; // TODO: Keep or delete?
   x: number;
   y: number;
+  rangeCheck: boolean;
+  rangeValue: number;
   army: ArmyPropsWithoutSelect[];
   base: BasePropsWithoutSelect[];
 }
@@ -24,6 +26,8 @@ function gridItem(): GridItem {
     aboveTerrain: '',
     x: 0,
     y: 0,
+    rangeCheck: false,
+    rangeValue: 0,
     army: [],
     base: []
   };
@@ -133,7 +137,8 @@ export function generateMap() {
       lifeRef: 80,
       rank: 0,
       y: player.y,
-      x: player.x+1
+      x: player.x+1,
+      index: 0
     }
 
     // Enemy
@@ -146,7 +151,8 @@ export function generateMap() {
       lifeRef: 80,
       rank: 0,
       y: enemy.y,
-      x: enemy.x+1
+      x: enemy.x+1,
+      index: 0
     }
   }
 

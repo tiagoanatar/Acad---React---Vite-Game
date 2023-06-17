@@ -12,6 +12,7 @@ export interface ArmyProps {
   rank: number;
   y: number;
   x: number;
+  index: number;
   setArmySelect: Dispatch<SetStateAction<{
     y: number;
     x: number;
@@ -32,6 +33,7 @@ export const Army = ({
   rank,
   y,
   x,
+  index,
   setArmySelect,
 }: ArmyProps) => {
   const currentLife = convertToPercentage(lifeRef, life);
@@ -74,6 +76,7 @@ export const Army = ({
     };
   }, [x, y, setArmySelect]);
 
+  // Select current army
   const handleArmySelection = () => {
     setArmySelect({
       y,
@@ -89,6 +92,7 @@ export const Army = ({
         rank,
         y,
         x,
+        index
       },
     });
   };
@@ -97,6 +101,7 @@ export const Army = ({
       className={`army army-${race}-${type}`}
       onClick={() => handleArmySelection()}
     >
+      {index}
       <div
         style={{
           background: `linear-gradient(to right, red ${currentLife}, black ${currentLife})`,
