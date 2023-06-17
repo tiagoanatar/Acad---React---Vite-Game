@@ -2,20 +2,47 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { GridItem } from "../data/cenario/sampleBoard";
 import { calculateDistance } from "../utils";
 import { Army } from "./Army";
-import { Base, BaseProps } from "./Base";
+import { Base } from "./Base";
+import { ArmyPropsWithoutSelect } from './Army';
 
 interface Props {
   map: GridItem[];
   setMap: Dispatch<SetStateAction<GridItem[]>>;
 }
 
+interface ArmySelect {
+  y: number;
+  x: number;
+  active: boolean;
+  copy: ArmyPropsWithoutSelect | null;
+}
+
+// const armySelectInitialState = 
+
 export const Map = ({ map, setMap }: Props) => {
-  const [armySelect, setArmySelect] = useState({ y: 0, x: 0, active: false });
+  const [armySelect, setArmySelect] = useState<ArmySelect>({ y: 0, x: 0, active: false, copy: null });
   const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
 
   const checkRange = (y: number, x: number) => {
     return calculateDistance(armySelect.x, armySelect.y, x, y) < 4 ? true : false;
   };
+
+  const handleArmyPositionChange = (id: string) => {
+    if(armySelect.active && armySelect.copy){
+      const army: ArmyPropsWithoutSelect = armySelect.copy;
+
+      const updatedMap: GridItem[] = map.map(item => {
+        if (item.id === id) {
+          return {
+            ...item,
+            army: [{ ...army}] // New army array
+          };
+        }
+        return item;
+      });
+      setMap(updatedMap);
+    }
+  }
   return (
     <div className="main-container">
       {JSON.stringify(armySelect)}
@@ -27,6 +54,7 @@ export const Map = ({ map, setMap }: Props) => {
                 key={cell.id}
                 id={cell.id}
                 className={`grid-item type-${cell.terrain}`}
+                onClick={() => handleArmyPositionChange(cell.id)}
               >
                 {/* Army range display */}
                 {armySelect.active && checkRange(cell.y, cell.x) && (

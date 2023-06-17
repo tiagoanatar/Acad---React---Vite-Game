@@ -1,6 +1,6 @@
-import { convertToPercentage } from '../utils';
-import { ArmyType } from '../data/types';
-import { useEffect } from 'react';
+import { convertToPercentage } from "../utils";
+import { ArmyType } from "../data/types";
+import { useEffect, Dispatch, SetStateAction } from "react";
 
 export interface ArmyProps {
   id: string;
@@ -12,10 +12,15 @@ export interface ArmyProps {
   rank: number;
   y: number;
   x: number;
-  setArmySelect: ({ y, x }: { y: number; x: number; active: boolean }) => void;
+  setArmySelect: Dispatch<SetStateAction<{
+    y: number;
+    x: number;
+    active: boolean;
+    copy: ArmyPropsWithoutSelect | null;
+  }>>
 }
 
-export type ArmyPropsWithoutSelect = Omit<ArmyProps, 'setArmySelect'>
+export type ArmyPropsWithoutSelect = Omit<ArmyProps, "setArmySelect">;
 
 export const Army = ({
   id,
@@ -34,7 +39,7 @@ export const Army = ({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const { key } = event;
-      const arrowKeys = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'];
+      const arrowKeys = ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"];
       const moveAmount = 54; // Amount to move in pixels
 
       if (arrowKeys.includes(key)) {
@@ -44,37 +49,53 @@ export const Army = ({
         let newY = y;
         let newX = x;
         switch (key) {
-          case 'ArrowLeft':
+          case "ArrowLeft":
             newX -= moveAmount;
             break;
-          case 'ArrowUp':
+          case "ArrowUp":
             newY -= moveAmount;
             break;
-          case 'ArrowRight':
+          case "ArrowRight":
             newX += moveAmount;
             break;
-          case 'ArrowDown':
+          case "ArrowDown":
             newY += moveAmount;
             break;
           default:
             break;
         }
-
-        setArmySelect({ y: newY, x: newX, active: true });
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [x, y, setArmySelect]);
 
+  const handleArmySelection = () => {
+    setArmySelect({
+      y,
+      x,
+      active: true,
+      copy: {
+        id,
+        faction,
+        race,
+        type,
+        life,
+        lifeRef,
+        rank,
+        y,
+        x,
+      },
+    });
+  };
   return (
     <div
       className={`army army-${race}-${type}`}
-      onClick={() => setArmySelect({ y, x, active: true })}
+      onClick={() => handleArmySelection()}
     >
       <div
         style={{
