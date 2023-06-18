@@ -3,7 +3,6 @@ import { STORE } from '../store';
 import { ArmyPropsWithoutSelect } from '../../components/Army';
 import { BasePropsWithoutSelect } from '../../components/Base';
 
-type Terrain = 'grass' | 'sand' | 'sea';
 type WaveTerrain = 'G' | 'S' | 'M' | 'F' | 'W';
 type AboveTerrain = 'mountain' | 'forest' | '';
 
