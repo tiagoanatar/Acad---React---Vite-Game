@@ -69,8 +69,8 @@ export const Map = ({ map, setMap }: Props) => {
         newArray.push(grid.slice(i, i + size));
       }
 
-      let wrongValues = true;
       // Loop over grid to correct terrains values affected by mountains, water and forest
+      let wrongValues = true;
       while (wrongValues) {
         bothLoops:
         for (let y = 0; y < newArray.length; y++) {
@@ -104,7 +104,6 @@ export const Map = ({ map, setMap }: Props) => {
     y: number,
     x: number
   ) => {
-    console.log(currentArmy);
     if (armySelect.active && armySelect.copy && currentArmy.length === 0) {
       const army: ArmyPropsWithoutSelect = { ...armySelect.copy };
       const updatedMap: GridItem[] = map.map((item) => {

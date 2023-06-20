@@ -1,6 +1,10 @@
-import { useEffect, useState } from 'react';
-import { generateMap, GridItem } from '../data/cenario/sampleBoard';
+import { useState } from 'react';
+import { generateMap } from '../data/cenario/sampleBoard';
+// Types
+import { Turn } from '../data/types';
+// Components
 import { Map } from './Map';
+import { Header } from './layout/Header';
 
 export const Main = () => {
 
@@ -20,6 +24,10 @@ export const Main = () => {
 
   // Map
   const [ map, setMap ] = useState(generateMap())
+
+  // Turns
+  const [ turn, setTurn ] = useState<Turn>('move')
+
   console.log(map);
   // Bases
   function initialValue() {
@@ -31,6 +39,9 @@ export const Main = () => {
   const [ bases, setBases ] = useState(initialValue());
 
   return (
-    <Map map={map} setMap={setMap} />
+    <>
+      <Header turn={turn} setTurn={setTurn} />
+      <Map map={map} setMap={setMap} />
+    </>
   );
 };

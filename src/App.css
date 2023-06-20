@@ -50,6 +50,12 @@
   z-index: 10;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* TERRAIN */
 
 .grid-container {
