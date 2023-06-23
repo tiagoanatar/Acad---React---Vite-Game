@@ -34,17 +34,21 @@ export const Map = ({ map, setMap }: Props) => {
   // Current base selected data
   const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
 
+  // -------------------------
   // Range map data
+  // -------------------------
   const rangeMap = useMemo(() => {
     const gridPoints = () => {
       const grid = [...map];
       const stack = [];
+
       if (!armySelect.copy) return;
+
       stack.push(armySelect.copy.index);
       // Mark player position as already checked
       grid[armySelect.copy.index].rangeCheck = true;
 
-      // Feed grid with positions
+      // Feed grid with positions costs
       for (let i = 0; i < grid.length; i++) {
         grid[i].rangeCheck = true;
         const distance = calculateDistance(
@@ -58,6 +62,8 @@ export const Map = ({ map, setMap }: Props) => {
           terrainCost = 1;
         } else if (grid[i].terrain === "W") {
           terrainCost = 2;
+        } else if (armySelect.copy.index !== i && grid[i].army.length) {
+          terrainCost = 99;
         }
         grid[i].rangeValue = distance + terrainCost;
       }
@@ -71,7 +77,10 @@ export const Map = ({ map, setMap }: Props) => {
 
       // Loop over grid to correct terrains values affected by mountains, water and forest
       let wrongValues = true;
-      while (wrongValues) {
+      let loopErrorBlocker = 0
+      while (wrongValues && loopErrorBlocker < 10_000) {
+        loopErrorBlocker++
+        console.log(loopErrorBlocker);
         bothLoops:
         for (let y = 0; y < newArray.length; y++) {
           for (let x = 0; x < newArray[y].length; x++) {
@@ -96,6 +105,8 @@ export const Map = ({ map, setMap }: Props) => {
     };
     return gridPoints() || [];
   }, [armySelect, map]);
+  // -------------------------
+  // -------------------------
 
   // Army position change
   const handleArmyPositionChange = (
@@ -139,7 +150,7 @@ export const Map = ({ map, setMap }: Props) => {
                   key={cell.id + "range"}
                   className="grid-item"
                   onClick={() =>
-                    cell.army.length === 0
+                    cell.army.length === 0 && cell.base.length === 0
                       ? handleArmyPositionChange(
                           cell.id,
                           cell.army,
