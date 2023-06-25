@@ -1,4 +1,4 @@
-import { useState, useMemo, Dispatch, SetStateAction } from "react";
+import { useState, useMemo, Dispatch, SetStateAction, MouseEvent } from "react";
 import { STORE } from "../data/store";
 import { GridItem } from "../data/cenario/sampleBoard";
 import { calculateDistance } from "../utils";
@@ -37,6 +37,19 @@ export const Map = ({ map, setMap }: Props) => {
   // -------------------------
   // Range map data
   // -------------------------
+  const [pathActive, setPathActive] = useState({});
+
+  function activatePath(onRange: boolean, e: MouseEvent<HTMLDivElement>) {
+    const { dataset } = e.currentTarget;
+    const x = dataset.y;
+    const y = dataset.x;
+    if (onRange) {
+      setPathActive({x, y});
+    } else {
+      setPathActive({});
+    }
+  }
+
   const rangeMap = useMemo(() => {
     const gridPoints = () => {
       const grid = [...map];
@@ -64,6 +77,8 @@ export const Map = ({ map, setMap }: Props) => {
           terrainCost = 2;
         } else if (armySelect.copy.index !== i && grid[i].army.length) {
           terrainCost = 99;
+        } else if (grid[i].base.length) {
+          terrainCost = 99;
         }
         grid[i].rangeValue = distance + terrainCost;
       }
@@ -77,44 +92,45 @@ export const Map = ({ map, setMap }: Props) => {
 
       // Loop over grid to correct terrains values affected by mountains, water and forest
       let wrongValues = true;
-      let loopErrorBlocker = 0
+      let loopErrorBlocker = 0;
       while (wrongValues && loopErrorBlocker < 10_000) {
-        loopErrorBlocker++
-        console.log(loopErrorBlocker);
-        bothLoops:
-        for (let y = 0; y < newArray.length; y++) {
+        loopErrorBlocker++;
+        bothLoops: for (let y = 0; y < newArray.length; y++) {
           for (let x = 0; x < newArray[y].length; x++) {
             if (
-              (y > 0 && newArray[y - 1][x].rangeValue < newArray[y][x].rangeValue) ||
-              (x > 0 && newArray[y][x - 1].rangeValue < newArray[y][x].rangeValue) ||
-              (x < newArray[y].length - 1 && newArray[y][x + 1].rangeValue < newArray[y][x].rangeValue) ||
-              (y < newArray.length - 1 && newArray[y + 1][x].rangeValue < newArray[y][x].rangeValue)
+              (y > 0 &&
+                newArray[y - 1][x].rangeValue < newArray[y][x].rangeValue) ||
+              (x > 0 &&
+                newArray[y][x - 1].rangeValue < newArray[y][x].rangeValue) ||
+              (x < newArray[y].length - 1 &&
+                newArray[y][x + 1].rangeValue < newArray[y][x].rangeValue) ||
+              (y < newArray.length - 1 &&
+                newArray[y + 1][x].rangeValue < newArray[y][x].rangeValue)
             ) {
               wrongValues = false;
-            } else if(newArray[y][x].rangeValue > 0) {
+            } else if (newArray[y][x].rangeValue > 0) {
               wrongValues = true;
               newArray[y][x].rangeValue++;
               break bothLoops;
             }
           }
         }
-        
       }
-
+      console.log("range: ", newArray.flat(2));
       return newArray.flat(2);
     };
     return gridPoints() || [];
-  }, [armySelect, map]);
+  }, [armySelect, map, pathActive]);
   // -------------------------
   // -------------------------
 
   // Army position change
-  const handleArmyPositionChange = (
+  function handleArmyPositionChange(
     id: string,
     currentArmy: ArmyPropsWithoutSelect[],
     y: number,
     x: number
-  ) => {
+  ) {
     if (armySelect.active && armySelect.copy && currentArmy.length === 0) {
       const army: ArmyPropsWithoutSelect = { ...armySelect.copy };
       const updatedMap: GridItem[] = map.map((item) => {
@@ -136,10 +152,11 @@ export const Map = ({ map, setMap }: Props) => {
       });
       setMap(updatedMap);
     }
-  };
+  }
   return (
     <div className="main-container">
-      Army Select: {JSON.stringify(armySelect)}
+      Army Select: {JSON.stringify(armySelect)} <br />
+      pathActive: {JSON.stringify(pathActive)}
       {/* Army range display */}
       {armySelect.active && (
         <div className="grid-container-over-a">
@@ -149,6 +166,8 @@ export const Map = ({ map, setMap }: Props) => {
                 <div
                   key={cell.id + "range"}
                   className="grid-item"
+                  data-y={cell.y}
+                  data-x={cell.x}
                   onClick={() =>
                     cell.army.length === 0 && cell.base.length === 0
                       ? handleArmyPositionChange(
@@ -159,11 +178,19 @@ export const Map = ({ map, setMap }: Props) => {
                         )
                       : null
                   }
+                  onMouseOver={(e) =>
+                    activatePath(
+                      !!armySelect.copy &&
+                        cell.rangeValue <
+                          armySelect.copy.rank + STORE.player.rangeIncrement, e
+                    )
+                  }
                 >
                   <div
                     className={
                       armySelect.copy &&
-                      cell.rangeValue < armySelect.copy.rank + 4
+                      cell.rangeValue <
+                        armySelect.copy.rank + STORE.player.rangeIncrement
                         ? "range-block"
                         : ""
                     }

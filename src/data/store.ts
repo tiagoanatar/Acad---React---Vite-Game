@@ -2,5 +2,8 @@
 export const STORE = {
     combatMap: {
         size: 20
+    },
+    player: {
+        rangeIncrement: 4
     }
 }
