@@ -14,6 +14,7 @@ export interface GridItem {
   y: number;
   rangeCheck: boolean;
   rangeValue: number;
+  pathActive: boolean;
   army: ArmyPropsWithoutSelect[];
   base: BasePropsWithoutSelect[];
 }
@@ -27,6 +28,7 @@ function gridItem(): GridItem {
     y: 0,
     rangeCheck: false,
     rangeValue: 0,
+    pathActive: false,
     army: [],
     base: []
   };
@@ -62,7 +64,7 @@ export function generateMap() {
     }
   }
 
-  // Select player/enemy staring base
+  // Select player/enemy starting base
   function selectRandomValue() {
     const res =
       basesPossibleTerrain[

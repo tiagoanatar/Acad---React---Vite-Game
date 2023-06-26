@@ -18,6 +18,11 @@ interface ArmySelect {
   copy: ArmyPropsWithoutSelect | null;
 }
 
+interface PathActive {
+  x: number | null;
+  y: number | null;
+}
+
 const armySelectInitialState = {
   y: -1,
   x: -1,
@@ -30,6 +35,11 @@ export const Map = ({ map, setMap }: Props) => {
   const [armySelect, setArmySelect] = useState<ArmySelect>({
     ...armySelectInitialState,
   });
+  // Path data
+  const [pathActive, setPathActive] = useState<PathActive>({
+    y: null,
+    x: null,
+  });
 
   // Current base selected data
   const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
@@ -37,19 +47,6 @@ export const Map = ({ map, setMap }: Props) => {
   // -------------------------
   // Range map data
   // -------------------------
-  const [pathActive, setPathActive] = useState({});
-
-  function activatePath(onRange: boolean, e: MouseEvent<HTMLDivElement>) {
-    const { dataset } = e.currentTarget;
-    const x = dataset.y;
-    const y = dataset.x;
-    if (onRange) {
-      setPathActive({x, y});
-    } else {
-      setPathActive({});
-    }
-  }
-
   const rangeMap = useMemo(() => {
     const gridPoints = () => {
       const grid = [...map];
@@ -116,11 +113,64 @@ export const Map = ({ map, setMap }: Props) => {
           }
         }
       }
-      console.log("range: ", newArray.flat(2));
+
+      // Path active
+      if (pathActive.x && pathActive.y) {
+        let loopErrorBlocker = 0;
+        let rangeValue = newArray[pathActive.y][pathActive.x].rangeValue;
+        let currentX = pathActive.x;
+        let currentY = pathActive.y;
+        newArray[pathActive.y][pathActive.x].pathActive = true;
+        while (rangeValue >= 1 && loopErrorBlocker < 10_000) {
+          loopErrorBlocker++;
+          bothLoops: for (let y = 0; y < newArray.length; y++) {
+            for (let x = 0; x < newArray[y].length; x++) {
+              if (
+                calculateDistance(
+                  newArray[y][x].x,
+                  newArray[y][x].y,
+                  currentX,
+                  currentY
+                ) < 2 &&
+                newArray[y][x].rangeValue < rangeValue &&
+                !newArray[y][x].pathActive
+              ) {
+                console.log(rangeValue)
+                currentY = y;
+                currentX = x;
+                rangeValue = newArray[y][x].rangeValue;
+                newArray[y][x].pathActive = true;
+                break bothLoops;
+              } else {
+                newArray[y][x].pathActive = false;
+              }
+            }
+          }
+        }
+      }
+
       return newArray.flat(2);
     };
     return gridPoints() || [];
   }, [armySelect, map, pathActive]);
+  // -------------------------
+  // -------------------------
+
+  // -------------------------
+  // Path map data
+  // -------------------------
+
+  function activatePath(onRange: boolean, e: MouseEvent<HTMLDivElement>) {
+    const { dataset } = e.currentTarget;
+    const x = Number(dataset.y);
+    const y = Number(dataset.x);
+    if (onRange && x && y) {
+      setPathActive({ x, y });
+    } else {
+      setPathActive({ x: null, y: null });
+    }
+  }
+
   // -------------------------
   // -------------------------
 
@@ -181,8 +231,10 @@ export const Map = ({ map, setMap }: Props) => {
                   onMouseOver={(e) =>
                     activatePath(
                       !!armySelect.copy &&
+                        cell.rangeValue > 0 &&
                         cell.rangeValue <
-                          armySelect.copy.rank + STORE.player.rangeIncrement, e
+                          armySelect.copy.rank + STORE.player.rangeIncrement,
+                      e
                     )
                   }
                 >
@@ -191,7 +243,9 @@ export const Map = ({ map, setMap }: Props) => {
                       armySelect.copy &&
                       cell.rangeValue <
                         armySelect.copy.rank + STORE.player.rangeIncrement
-                        ? "range-block"
+                        ? cell.pathActive
+                          ? "range-block path"
+                          : "range-block"
                         : ""
                     }
                   >
