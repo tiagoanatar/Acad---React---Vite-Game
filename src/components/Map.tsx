@@ -116,11 +116,19 @@ export const Map = ({ map, setMap }: Props) => {
 
       // Path active
       if (pathActive.x && pathActive.y) {
+        // Reset path Active
+        for (let y = 0; y < newArray.length; y++) {
+          for (let x = 0; x < newArray[y].length; x++) {
+            newArray[y][x].pathActive = false;
+          }
+        }
+
         let loopErrorBlocker = 0;
         let rangeValue = newArray[pathActive.y][pathActive.x].rangeValue;
         let currentX = pathActive.x;
         let currentY = pathActive.y;
         newArray[pathActive.y][pathActive.x].pathActive = true;
+
         while (rangeValue >= 1 && loopErrorBlocker < 10_000) {
           loopErrorBlocker++;
           bothLoops: for (let y = 0; y < newArray.length; y++) {
@@ -131,18 +139,15 @@ export const Map = ({ map, setMap }: Props) => {
                   newArray[y][x].y,
                   currentX,
                   currentY
-                ) < 2 &&
+                ) === 1 &&
                 newArray[y][x].rangeValue < rangeValue &&
                 !newArray[y][x].pathActive
               ) {
-                console.log(rangeValue)
                 currentY = y;
                 currentX = x;
                 rangeValue = newArray[y][x].rangeValue;
                 newArray[y][x].pathActive = true;
                 break bothLoops;
-              } else {
-                newArray[y][x].pathActive = false;
               }
             }
           }
@@ -162,8 +167,8 @@ export const Map = ({ map, setMap }: Props) => {
 
   function activatePath(onRange: boolean, e: MouseEvent<HTMLDivElement>) {
     const { dataset } = e.currentTarget;
-    const x = Number(dataset.y);
-    const y = Number(dataset.x);
+    const x = Number(dataset.x);
+    const y = Number(dataset.y);
     if (onRange && x && y) {
       setPathActive({ x, y });
     } else {
@@ -206,7 +211,7 @@ export const Map = ({ map, setMap }: Props) => {
   return (
     <div className="main-container">
       Army Select: {JSON.stringify(armySelect)} <br />
-      pathActive: {JSON.stringify(pathActive)}
+      pathActive: {JSON.stringify(pathActive)} <br />
       {/* Army range display */}
       {armySelect.active && (
         <div className="grid-container-over-a">
@@ -232,7 +237,7 @@ export const Map = ({ map, setMap }: Props) => {
                     activatePath(
                       !!armySelect.copy &&
                         cell.rangeValue > 0 &&
-                        cell.rangeValue <
+                        cell.rangeValue <=
                           armySelect.copy.rank + STORE.player.rangeIncrement,
                       e
                     )
@@ -241,7 +246,7 @@ export const Map = ({ map, setMap }: Props) => {
                   <div
                     className={
                       armySelect.copy &&
-                      cell.rangeValue <
+                      cell.rangeValue <=
                         armySelect.copy.rank + STORE.player.rangeIncrement
                         ? cell.pathActive
                           ? "range-block path"
