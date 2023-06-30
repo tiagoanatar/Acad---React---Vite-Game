@@ -3,7 +3,7 @@ import { generateMap } from '../data/cenario/sampleBoard';
 // Types
 import { Turn } from '../data/types';
 // Components
-import { Map } from './Map';
+import { Map } from './map/Map';
 import { Header } from './layout/Header';
 
 export const Main = () => {

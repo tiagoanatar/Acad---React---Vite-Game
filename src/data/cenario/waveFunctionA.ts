@@ -72,7 +72,7 @@ function map_data({ type, frequency, u, l, r, d }: FinalCell) {
 
 tile_objects_01[0] = map_data({
   type: "G",
-  frequency: 4,
+  frequency: 1,
   u: ["G", "S", "F", "M"], // u
   l: ["G", "S", "F", "M"], // l
   r: ["G", "S", "F", "M"], // r
@@ -108,7 +108,7 @@ tile_objects_01[3] = map_data({
 
 tile_objects_01[4] = map_data({
   type: "M",
-  frequency: 1,
+  frequency: 35,
   u: ["G", "F", "M"], // u
   l: ["G", "F", "M"], // l
   r: ["G", "F", "M"], // r

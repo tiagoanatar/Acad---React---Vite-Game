@@ -1,24 +1,25 @@
 import { useState, useMemo, Dispatch, SetStateAction, MouseEvent } from "react";
-import { STORE } from "../data/store";
-import { GridItem } from "../data/cenario/sampleBoard";
-import { calculateDistance } from "../utils";
-import { Army } from "./Army";
-import { Base } from "./Base";
-import { ArmyPropsWithoutSelect } from "./Army";
+import { STORE } from "../../data/store";
+import { GridItem } from "../../data/cenario/sampleBoard";
+import { calculateDistance } from "../../utils";
+import { Army } from "../Army";
+import { Base } from "../Base";
+import { ArmyPropsWithoutSelect } from "../Army";
+import { MapRange } from "./MapRange";
 
 interface Props {
   map: GridItem[];
   setMap: Dispatch<SetStateAction<GridItem[]>>;
 }
 
-interface ArmySelect {
+export interface ArmySelect {
   y: number;
   x: number;
   active: boolean;
   copy: ArmyPropsWithoutSelect | null;
 }
 
-interface PathActive {
+export interface PathActive {
   x: number | null;
   y: number | null;
 }
@@ -68,9 +69,9 @@ export const Map = ({ map, setMap }: Props) => {
           grid[i].y
         );
         let terrainCost = 0;
-        if (grid[i].terrain === "F" || grid[i].terrain === "M") {
+        if (armySelect.copy.index !== i && grid[i].terrain === "F" || grid[i].terrain === "M") {
           terrainCost = 1;
-        } else if (grid[i].terrain === "W") {
+        } else if (armySelect.copy.index !== i && grid[i].terrain === "W") {
           terrainCost = 2;
         } else if (armySelect.copy.index !== i && grid[i].army.length) {
           terrainCost = 99;
@@ -161,106 +162,20 @@ export const Map = ({ map, setMap }: Props) => {
   // -------------------------
   // -------------------------
 
-  // -------------------------
-  // Path map data
-  // -------------------------
-
-  function activatePath(onRange: boolean, e: MouseEvent<HTMLDivElement>) {
-    const { dataset } = e.currentTarget;
-    const x = Number(dataset.x);
-    const y = Number(dataset.y);
-    if (onRange && x && y) {
-      setPathActive({ x, y });
-    } else {
-      setPathActive({ x: null, y: null });
-    }
-  }
-
-  // -------------------------
-  // -------------------------
-
-  // Army position change
-  function handleArmyPositionChange(
-    id: string,
-    currentArmy: ArmyPropsWithoutSelect[],
-    y: number,
-    x: number
-  ) {
-    if (armySelect.active && armySelect.copy && currentArmy.length === 0) {
-      const army: ArmyPropsWithoutSelect = { ...armySelect.copy };
-      const updatedMap: GridItem[] = map.map((item) => {
-        if (item.id === id) {
-          setArmySelect({
-            y: y,
-            x: x,
-            active: true,
-            copy: army,
-          });
-          return {
-            ...item,
-            x: x,
-            y: y,
-            army: [{ ...army, x: x, y: y }], // New army array
-          };
-        }
-        return item;
-      });
-      setMap(updatedMap);
-    }
-  }
   return (
     <div className="main-container">
       Army Select: {JSON.stringify(armySelect)} <br />
       pathActive: {JSON.stringify(pathActive)} <br />
       {/* Army range display */}
       {armySelect.active && (
-        <div className="grid-container-over-a">
-          <div className="range-map">
-            {rangeMap.map((cell) => {
-              return (
-                <div
-                  key={cell.id + "range"}
-                  className="grid-item"
-                  data-y={cell.y}
-                  data-x={cell.x}
-                  onClick={() =>
-                    cell.army.length === 0 && cell.base.length === 0
-                      ? handleArmyPositionChange(
-                          cell.id,
-                          cell.army,
-                          cell.y,
-                          cell.x
-                        )
-                      : null
-                  }
-                  onMouseOver={(e) =>
-                    activatePath(
-                      !!armySelect.copy &&
-                        cell.rangeValue > 0 &&
-                        cell.rangeValue <=
-                          armySelect.copy.rank + STORE.player.rangeIncrement,
-                      e
-                    )
-                  }
-                >
-                  <div
-                    className={
-                      armySelect.copy &&
-                      cell.rangeValue <=
-                        armySelect.copy.rank + STORE.player.rangeIncrement
-                        ? cell.pathActive
-                          ? "range-block path"
-                          : "range-block"
-                        : ""
-                    }
-                  >
-                    {cell.rangeValue}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <MapRange
+          rangeMap={rangeMap}
+          map={map}
+          setMap={setMap}
+          armySelect={armySelect}
+          setArmySelect={setArmySelect}
+          setPathActive={setPathActive}
+        />
       )}
       {/* Main map */}
       <div className="grid-container">
