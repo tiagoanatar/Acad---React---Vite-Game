@@ -69,7 +69,7 @@ export const Map = ({ map, setMap }: Props) => {
           grid[i].y
         );
         let terrainCost = 0;
-        if (armySelect.copy.index !== i && grid[i].terrain === "F" || grid[i].terrain === "M") {
+        if ((grid[i].terrain === "F" || grid[i].terrain === "M") && armySelect.copy.index !== i) {
           terrainCost = 1;
         } else if (armySelect.copy.index !== i && grid[i].terrain === "W") {
           terrainCost = 2;

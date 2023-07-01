@@ -73,46 +73,46 @@ function map_data({ type, frequency, u, l, r, d }: FinalCell) {
 tile_objects_01[0] = map_data({
   type: "G",
   frequency: 1,
-  u: ["G", "S", "F", "M"], // u
-  l: ["G", "S", "F", "M"], // l
-  r: ["G", "S", "F", "M"], // r
-  d: ["G", "S", "F", "M"], // d
+  u: ["G", "S", "F", "M"],
+  l: ["G", "S", "F", "M"],
+  r: ["G", "S", "F", "M"],
+  d: ["G", "S", "F", "M"],
 });
 
 tile_objects_01[1] = map_data({
   type: "S",
   frequency: 1,
-  u: ["G", "S", "W"], // u
-  l: ["G", "S", "W"], // l
-  r: ["G", "S", "W"], // r
-  d: ["G", "S", "W"], // d
+  u: ["G", "S", "W"],
+  l: ["G", "S", "W"],
+  r: ["G", "S", "W"],
+  d: ["G", "S", "W"],
 });
 
 tile_objects_01[2] = map_data({
   type: "W",
   frequency: 1,
-  u: ["W", "S"], // u
-  l: ["W", "S"], // l
-  r: ["W", "S"], // r
-  d: ["W", "S"], // d
+  u: ["W", "S"],
+  l: ["W", "S"],
+  r: ["W", "S"],
+  d: ["W", "S"],
 });
 
 tile_objects_01[3] = map_data({
   type: "F",
   frequency: 1,
-  u: ["G", "F"], // u
-  l: ["G", "F"], // l
-  r: ["G", "F"], // r
-  d: ["G", "F"], // d
+  u: ["G", "F"],
+  l: ["G", "F"],
+  r: ["G", "F"],
+  d: ["G", "F"],
 });
 
 tile_objects_01[4] = map_data({
   type: "M",
   frequency: 35,
-  u: ["G", "F", "M"], // u
-  l: ["G", "F", "M"], // l
-  r: ["G", "F", "M"], // r
-  d: ["G", "F", "M"], // d
+  u: ["G", "F", "M"],
+  l: ["G", "F", "M"],
+  r: ["G", "F", "M"],
+  d: ["G", "F", "M"],
 });
 
 /* distance of 2 points */
