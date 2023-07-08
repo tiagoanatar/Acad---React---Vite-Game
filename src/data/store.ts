@@ -4,6 +4,6 @@ export const STORE = {
         size: 20
     },
     player: {
-        rangeIncrement: 3
+        rangeIncrement: 7
     }
 }

@@ -66,7 +66,7 @@ export const MapRange = ({
     const { dataset } = e.currentTarget;
     const x = Number(dataset.x);
     const y = Number(dataset.y);
-    if (onRange && x && y) {
+    if (onRange) {
       setPathActive({ x, y });
     } else {
       setPathActive({ x: null, y: null });

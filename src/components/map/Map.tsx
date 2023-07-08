@@ -116,7 +116,7 @@ export const Map = ({ map, setMap }: Props) => {
       }
 
       // Path active
-      if (pathActive.x && pathActive.y) {
+      if (pathActive.x !== null && pathActive.y !== null) {
         // Reset path Active
         for (let y = 0; y < newArray.length; y++) {
           for (let x = 0; x < newArray[y].length; x++) {
@@ -148,6 +148,7 @@ export const Map = ({ map, setMap }: Props) => {
                 currentX = x;
                 rangeValue = newArray[y][x].rangeValue;
                 newArray[y][x].pathActive = true;
+                // Save movement array **
                 break bothLoops;
               }
             }
