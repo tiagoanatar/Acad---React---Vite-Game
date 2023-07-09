@@ -36,11 +36,15 @@ export const Map = ({ map, setMap }: Props) => {
   const [armySelect, setArmySelect] = useState<ArmySelect>({
     ...armySelectInitialState,
   });
-  // Path data
+
+  // Active Path 
   const [pathActive, setPathActive] = useState<PathActive>({
     y: null,
     x: null,
   });
+
+  // Path data
+  const [ path, setPath ] = useState<{y: number, x: number}[]>([]);
 
   // Current base selected data
   const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
@@ -124,6 +128,8 @@ export const Map = ({ map, setMap }: Props) => {
           }
         }
 
+        setPath([]);
+
         let loopErrorBlocker = 0;
         let rangeValue = newArray[pathActive.y][pathActive.x].rangeValue;
         let currentX = pathActive.x;
@@ -148,6 +154,7 @@ export const Map = ({ map, setMap }: Props) => {
                 currentX = x;
                 rangeValue = newArray[y][x].rangeValue;
                 newArray[y][x].pathActive = true;
+                setPath((prev) => [...prev, {y, x}])
                 // Save movement array **
                 break bothLoops;
               }
@@ -167,6 +174,7 @@ export const Map = ({ map, setMap }: Props) => {
     <div className="main-container">
       Army Select: {JSON.stringify(armySelect)} <br />
       pathActive: {JSON.stringify(pathActive)} <br />
+      path: {JSON.stringify(path)}
       {/* Army range display */}
       {armySelect.active && (
         <MapRange

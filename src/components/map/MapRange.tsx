@@ -104,13 +104,13 @@ export const MapRange = ({
                   armySelect.copy &&
                   cell.rangeValue <=
                     armySelect.copy.rank + STORE.player.rangeIncrement
-                    ? cell.pathActive
-                      ? "range-block path"
-                      : "range-block"
+                    ? "range-block"
                     : ""
                 }
               >
-                {cell.rangeValue}
+                <div className={cell.pathActive ? "path" : ""}>
+                  {cell.rangeValue}
+                </div>
               </div>
             </div>
           );

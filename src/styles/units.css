@@ -1,0 +1,79 @@
+.life-bar {
+  height: 6px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  transition: 1s;
+}
+
+/* BASES */
+
+.base {
+  position: relative;
+}
+
+.base:hover .life-bar {
+  opacity: 1;
+}
+
+.base-0-city {
+  background-image: url("../src/assets/bases/human_city.png");
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.base-1-city {
+  background-image: url("../src/assets/bases/orc_city.png");
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/**/
+
+.type-S.human-city {
+  background-image: url("../src/assets/bases/human_city.png"),
+    url("../src/assets/terrain/terrain-sand.png");
+}
+
+.type-G.human-city {
+  background-image: url("../src/assets/bases/human_city.png"),
+    url("../src/assets/terrain/terrain-grass.png");
+}
+
+.type-S.orc-city {
+  background-image: url("../src/assets/bases/orc_city.png"),
+    url("../src/assets/terrain/terrain-sand.png");
+}
+
+.type-G.orc-city {
+  background-image: url("../src/assets/bases/orc_city.png"),
+    url("../src/assets/terrain/terrain-grass.png");
+}
+
+/* ARMY */
+
+.army {
+  position: relative;
+  z-index: 15;
+
+  &:hover .life-bar {
+    opacity: 1;
+  }
+}
+
+.army-human-knight {
+  background-image: url("../src/assets/player/human-knight-01.gif");
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.army-orc-knight {
+  background-image: url("../src/assets/player/orc-knight-01.gif");
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
