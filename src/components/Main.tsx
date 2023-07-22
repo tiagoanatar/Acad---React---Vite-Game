@@ -29,6 +29,7 @@ export const Main = () => {
   const [ turn, setTurn ] = useState<Turn>('move')
 
   console.log(map);
+  
   // Bases
   function initialValue() {
     return {

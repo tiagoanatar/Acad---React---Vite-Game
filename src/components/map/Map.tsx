@@ -1,4 +1,4 @@
-import { useState, useMemo, Dispatch, SetStateAction, MouseEvent } from "react";
+import { useState, useMemo, Dispatch, SetStateAction } from "react";
 import { STORE } from "../../data/store";
 import { GridItem } from "../../data/cenario/sampleBoard";
 import { calculateDistance } from "../../utils";
@@ -48,6 +48,8 @@ export const Map = ({ map, setMap }: Props) => {
 
   // Current base selected data
   const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
+
+  
 
   // -------------------------
   // Range map data
