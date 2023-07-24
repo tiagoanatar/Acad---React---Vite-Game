@@ -14,36 +14,19 @@ interface FinalCell {
 }
 
 export interface Map {
-  final: FinalCell;
+  final: FinalCell | string;
   y: number;
   x: number;
   id: number;
-  vari: [];
+  vari: FinalCell[];
   collapse: boolean;
 }
 
 const MAP_SIZE_X = STORE.combatMap.size;
 const MAP_SIZE_Y = STORE.combatMap.size;
-const map: Map[] | any = []
-// [
-//   {
-//     final: {
-//       type: "G",
-//       frequency: 0,
-//       u: [],
-//       l: [],
-//       r: [],
-//       d: [],
-//     },
-//     y: 0,
-//     x: 0,
-//     id: 0,
-//     vari: [],
-//     collapse: false,
-//   },
-// ];
+const map: Map[][] = []
 
-const map_b: any = []; // complex strcutures
+const map_b: Map[][] = []; // complex structures
 let map_id = 0;
 
 // sample array
@@ -53,7 +36,7 @@ let map_id = 0;
 // W - water
 
 // object array
-const tile_objects_01: any = [];
+const tile_objects_01: FinalCell[] = [];
 
 function map_data({ type, frequency, u, l, r, d }: FinalCell) {
   return {
@@ -127,7 +110,7 @@ function distance(x1: number, x2: number, y1: number, y2: number) {
 // MAP LOAD
 ///////////////////////////////////////////
 
-// class constructor
+// constructor
 function map_gen(final: string, y: number, x: number, id: number, vari: []) {
   return {
     final: final,
@@ -298,7 +281,7 @@ function colapse_at(y: number, x: number) {
 // PROPAGATE
 ///////////////////////////////////////////
 
-const temp_array: any = [];
+const temp_array: string[] = [];
 
 function propagate(y: number, x: number) {
   const stack = [];
