@@ -5,6 +5,7 @@ import { Turn } from '../data/types';
 // Components
 import { Map } from './map/Map';
 import { Header } from './layout/Header';
+import { ArmyPropsWithoutSelect } from './Army';
 
 export const Main = () => {
 
@@ -28,6 +29,9 @@ export const Main = () => {
   // Turns
   const [ turn, setTurn ] = useState<Turn>('move')
 
+  // Armies
+  const [armies, setArmies] = useState<ArmyPropsWithoutSelect[]>([]);
+
   console.log(map);
   
   // Bases
@@ -42,7 +46,7 @@ export const Main = () => {
   return (
     <>
       <Header turn={turn} setTurn={setTurn} />
-      <Map map={map} setMap={setMap} />
+      <Map map={map} setMap={setMap} armies={armies} setArmies={setArmies} />
     </>
   );
 };

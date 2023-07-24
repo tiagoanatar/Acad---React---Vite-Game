@@ -1,9 +1,9 @@
-import { generateWave } from './waveFunctionA';
+import { generateWave, FinalCell } from './waveFunctionA';
 import { STORE } from '../store';
 import { ArmyPropsWithoutSelect } from '../../components/Army';
 import { BasePropsWithoutSelect } from '../../components/Base';
 
-type WaveTerrain = 'G' | 'S' | 'M' | 'F' | 'W';
+type WaveTerrain = 'G' | 'S' | 'M' | 'F' | 'W' | string;
 type AboveTerrain = 'mountain' | 'forest' | '';
 
 export interface GridItem {
@@ -53,7 +53,7 @@ export function generateMap() {
         newItem.x = x;
         newItem.y = y;
         newItem.id = y + '-' + x;
-        newItem.terrain = waveData[y][x].final.type;
+        newItem.terrain = (waveData[y][x].final as FinalCell).type;
         map[y][x] = newItem;
 
         // Save G(grass) or S(sand) in a array for future search

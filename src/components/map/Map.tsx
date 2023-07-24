@@ -10,6 +10,8 @@ import { MapRange } from "./MapRange";
 interface Props {
   map: GridItem[];
   setMap: Dispatch<SetStateAction<GridItem[]>>;
+  armies: ArmyPropsWithoutSelect[]
+  setArmies: Dispatch<SetStateAction<ArmyPropsWithoutSelect[]>>;
 }
 
 export interface ArmySelect {

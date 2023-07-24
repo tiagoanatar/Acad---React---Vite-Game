@@ -4,7 +4,7 @@ import { STORE } from '../store';
 // VARS
 //////////////////////////////////////////
 
-interface FinalCell {
+export interface FinalCell {
   type: string;
   frequency: number;
   u: string[];
