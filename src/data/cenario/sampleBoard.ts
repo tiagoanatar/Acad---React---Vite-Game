@@ -56,10 +56,7 @@ export function generateMap() {
         newItem.terrain = (waveData[y][x].final as FinalCell).type;
         map[y][x] = newItem;
 
-        // Save G(grass) or S(sand) in a array for future search
-        if (newItem.terrain === 'G' || newItem.terrain === 'S') {
-          basesPossibleTerrain.push(newItem);
-        }
+        basesPossibleTerrain.push(newItem);
       }
     }
   }
