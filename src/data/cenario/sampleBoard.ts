@@ -1,6 +1,6 @@
 import { generateWave, FinalCell } from './waveFunctionA';
 import { STORE } from '../store';
-import { ArmyPropsWithoutSelect } from '../../components/Army';
+import { InitialPosition } from "../initialArmyState";
 import { BasePropsWithoutSelect } from '../../components/Base';
 
 type WaveTerrain = 'G' | 'S' | 'M' | 'F' | 'W' | string;
@@ -15,7 +15,7 @@ export interface GridItem {
   rangeCheck: boolean;
   rangeValue: number;
   pathActive: boolean;
-  army: ArmyPropsWithoutSelect[];
+  army: string;
   base: BasePropsWithoutSelect[];
 }
 
@@ -29,7 +29,7 @@ function gridItem(): GridItem {
     rangeCheck: false,
     rangeValue: 0,
     pathActive: false,
-    army: [],
+    army: '',
     base: []
   };
 }
@@ -42,6 +42,9 @@ const basesPossibleTerrain: GridItem[] = [];
 
 const waveData = generateWave();
 const size = STORE.combatMap.size;
+
+// Exported first armies position
+let armyPositions: InitialPosition;
 
 export function generateMap() {
   function feedMap() {
@@ -126,32 +129,13 @@ export function generateMap() {
     const { player, enemy } = positions;
 
     // Player
-    map[player.y][player.x+1].army[0] = {
-      id: 'human-knight-1',
-      faction: 0,
-      race: 'human',
-      type: 'knight',
-      life: 55,
-      lifeRef: 80,
-      rank: 0,
-      y: player.y,
-      x: player.x+1,
-      index: 0
-    }
+    map[player.y][player.x+1].army = '0-0-human-knight';
+    map[1][1].army = '0-1-human-knight';
 
     // Enemy
-    map[enemy.y][enemy.x+1].army[0] = {
-      id: 'orc-knight-1',
-      faction: 0,
-      race: 'orc',
-      type: 'knight',
-      life: 74,
-      lifeRef: 80,
-      rank: 0,
-      y: enemy.y,
-      x: enemy.x+1,
-      index: 0
-    }
+    map[enemy.y][enemy.x+1].army = '1-0-orc-knight';
+
+    armyPositions = {y0: player.y, x0: player.x+1, y1: enemy.y, x1: enemy.x+1};
   }
 
   if (map.length === 0) {
@@ -159,5 +143,6 @@ export function generateMap() {
     selectPlayersPosition();
   }
 
-  return map.flat(2);
+  const finalMap = map.flat(2);
+  return { finalMap, armyPositions };
 }

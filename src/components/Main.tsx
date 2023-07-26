@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { generateMap } from '../data/cenario/sampleBoard';
 // Types
 import { Turn } from '../data/types';
+// Army state
+import { initialArmyState } from "../data/initialArmyState";
 // Components
 import { Map } from './map/Map';
 import { Header } from './layout/Header';
-import { ArmyPropsWithoutSelect } from './Army';
 
 export const Main = () => {
 
@@ -23,16 +24,25 @@ export const Main = () => {
   //   };
   // }, []);
 
+  const { finalMap, armyPositions } = generateMap();
+  const armyList = initialArmyState(armyPositions);
+
   // Map
-  const [ map, setMap ] = useState(generateMap())
+  const [ map, setMap ] = useState(finalMap)
 
   // Turns
   const [ turn, setTurn ] = useState<Turn>('move')
 
   // Armies
-  const [armies, setArmies] = useState<ArmyPropsWithoutSelect[]>([]);
+  const [armies, setArmies] = useState(armyList);
+
+  useEffect(() => {
+    // setArmies(initialArmyState(armyPositions || {y0: 0, x0: 0, y1: 1, x1: 1}))
+  },[armyPositions])
+
 
   console.log(map);
+  console.log(armyPositions);
   
   // Bases
   function initialValue() {

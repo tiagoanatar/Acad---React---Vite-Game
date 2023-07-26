@@ -1,17 +1,17 @@
 import { useState, useMemo, Dispatch, SetStateAction } from "react";
 import { STORE } from "../../data/store";
+import { ArmyType } from "../../data/types";
 import { GridItem } from "../../data/cenario/sampleBoard";
 import { calculateDistance } from "../../utils";
-import { Army } from "../Army";
+import { Army, ArmyPropsWithoutSelect } from "../Army";
 import { Base } from "../Base";
-import { ArmyPropsWithoutSelect } from "../Army";
 import { MapRange } from "./MapRange";
 
 interface Props {
   map: GridItem[];
   setMap: Dispatch<SetStateAction<GridItem[]>>;
-  armies: ArmyPropsWithoutSelect[]
-  setArmies: Dispatch<SetStateAction<ArmyPropsWithoutSelect[]>>;
+  armies: ArmyPropsWithoutSelect[][];
+  setArmies: Dispatch<SetStateAction<ArmyPropsWithoutSelect[][]>>;
 }
 
 export interface ArmySelect {
@@ -33,25 +33,63 @@ const armySelectInitialState = {
   copy: null,
 };
 
-export const Map = ({ map, setMap }: Props) => {
+export const Map = ({ map, setMap, armies }: Props) => {
   // Current army selected data
   const [armySelect, setArmySelect] = useState<ArmySelect>({
     ...armySelectInitialState,
   });
 
-  // Active Path 
+  // Active Path
   const [pathActive, setPathActive] = useState<PathActive>({
     y: null,
     x: null,
   });
 
   // Path data
-  const [ path, setPath ] = useState<{y: number, x: number}[]>([]);
+  const [path, setPath] = useState<{ y: number; x: number }[]>([]);
 
   // Current base selected data
   const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
 
-  
+  // Place army
+  const findObjectById = (
+    id: string,
+    arrayOfArrays: ArmyPropsWithoutSelect[][]
+  ) => {
+    for (const arr of arrayOfArrays) {
+      const foundObject = arr.find((obj) => obj.id === id);
+      if (foundObject && foundObject.life > 0) {
+        return foundObject;
+      }
+    }
+  };
+
+  const placeArmy = (armyRef: string, index: number) => {
+    if (armyRef.length > 0) {
+      const data = findObjectById(armyRef, armies);
+      console.log(armyRef);
+      if (!data) {
+        return null;
+      }
+      return (
+        <Army
+          id={data.id}
+          faction={data.faction}
+          race={data.race}
+          life={data.life}
+          lifeRef={data.lifeRef}
+          rank={data.rank}
+          type={data.type}
+          y={data.y}
+          x={data.x}
+          index={index}
+          setArmySelect={setArmySelect}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
 
   // -------------------------
   // Range map data
@@ -77,7 +115,10 @@ export const Map = ({ map, setMap }: Props) => {
           grid[i].y
         );
         let terrainCost = 0;
-        if ((grid[i].terrain === "F" || grid[i].terrain === "M") && armySelect.copy.index !== i) {
+        if (
+          (grid[i].terrain === "F" || grid[i].terrain === "M") &&
+          armySelect.copy.index !== i
+        ) {
           terrainCost = 1;
         } else if (armySelect.copy.index !== i && grid[i].terrain === "W") {
           terrainCost = 2;
@@ -158,7 +199,7 @@ export const Map = ({ map, setMap }: Props) => {
                 currentX = x;
                 rangeValue = newArray[y][x].rangeValue;
                 newArray[y][x].pathActive = true;
-                setPath((prev) => [...prev, {y, x}])
+                setPath((prev) => [...prev, { y, x }]);
                 // Save movement array **
                 break bothLoops;
               }
@@ -199,21 +240,8 @@ export const Map = ({ map, setMap }: Props) => {
               id={cell.id}
               className={`grid-item type-${cell.terrain}`}
             >
-              {cell.army.length > 0 && (
-                <Army
-                  id={cell.army[0].id}
-                  faction={cell.army[0].faction}
-                  race={cell.army[0].race}
-                  life={cell.army[0].life}
-                  lifeRef={cell.army[0].lifeRef}
-                  rank={cell.army[0].rank}
-                  type={cell.army[0].type}
-                  y={cell.army[0].y}
-                  x={cell.army[0].x}
-                  index={index}
-                  setArmySelect={setArmySelect}
-                />
-              )}
+              {/* Army render */}
+              {placeArmy(cell.army, index)}
               {cell.base.length > 0 && (
                 <Base
                   id={cell.base[0].id}

@@ -35,7 +35,7 @@ export const MapRange = ({
   // Army position change
   function handleArmyPositionChange(
     id: string,
-    currentArmy: ArmyPropsWithoutSelect[],
+    currentArmy: string,
     y: number,
     x: number
   ) {
@@ -53,7 +53,7 @@ export const MapRange = ({
             ...item,
             x: x,
             y: y,
-            army: [{ ...army, x: x, y: y }], // New army array
+            army: currentArmy, // New army array
           };
         }
         return item;
