@@ -10,9 +10,8 @@ export const Header = ({
   turn,
   setTurn,
 }: Props) => {
-
   return (
-    <div className="header">
+      <div className="header">
       <div className="turn">
         {turn}
       </div>
