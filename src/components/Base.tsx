@@ -1,7 +1,7 @@
 import { convertToPercentage } from '../utils';
 import { BaseType } from '../data/types';
 
-export interface BaseProps {
+interface Props {
   id: string;
   faction: number;
   race: string;
@@ -14,9 +14,9 @@ export interface BaseProps {
   setBaseSelect: ({ y, x }: { y: number; x: number; active: boolean }) => void;
 }
 
-export type BasePropsWithoutSelect = Omit<BaseProps, 'setBaseSelect'>
+export type BasePropsWithoutSelect = Omit<Props, 'setBaseSelect'>
 
-export const Base = ({ faction, type, life, lifeRef, rank, y, x }: BaseProps) => {
+export const Base = ({ faction, type, life, lifeRef, rank, y, x }: Props) => {
   const currentLife = convertToPercentage(lifeRef, life);
   return (
     <div className={`base base-${faction}-${type}`}>

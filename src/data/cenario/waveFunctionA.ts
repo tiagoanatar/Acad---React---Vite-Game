@@ -1,9 +1,5 @@
 import { STORE } from '../store';
 
-//////////////////////////////////////////
-// VARS
-//////////////////////////////////////////
-
 export interface FinalCell {
   type: string;
   frequency: number;

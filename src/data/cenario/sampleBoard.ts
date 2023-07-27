@@ -1,23 +1,7 @@
 import { generateWave, FinalCell } from './waveFunctionA';
 import { STORE } from '../store';
+import { GridItem } from '../types';
 import { InitialPosition } from "../initialArmyState";
-import { BasePropsWithoutSelect } from '../../components/Base';
-
-type WaveTerrain = 'G' | 'S' | 'M' | 'F' | 'W' | string;
-type AboveTerrain = 'mountain' | 'forest' | '';
-
-export interface GridItem {
-  id: string;
-  terrain: WaveTerrain;
-  aboveTerrain: AboveTerrain; // TODO: Keep or delete?
-  x: number;
-  y: number;
-  rangeCheck: boolean;
-  rangeValue: number;
-  pathActive: boolean;
-  army: string;
-  base: BasePropsWithoutSelect[];
-}
 
 function gridItem(): GridItem {
   return {

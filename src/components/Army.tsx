@@ -2,7 +2,7 @@ import { convertToPercentage } from "../utils";
 import { ArmyType } from "../data/types";
 import { useEffect, Dispatch, SetStateAction } from "react";
 
-export interface ArmyProps {
+interface Props {
   id: string;
   faction: number;
   race: string;
@@ -21,7 +21,7 @@ export interface ArmyProps {
   }>>
 }
 
-export type ArmyPropsWithoutSelect = Omit<ArmyProps, "setArmySelect">;
+export type ArmyPropsWithoutSelect = Omit<Props, "setArmySelect">;
 
 export const Army = ({
   id,
@@ -35,7 +35,7 @@ export const Army = ({
   x,
   index,
   setArmySelect,
-}: ArmyProps) => {
+}: Props) => {
   const currentLife = convertToPercentage(lifeRef, life);
 
   useEffect(() => {
