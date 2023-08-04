@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, MouseEvent } from "react";
 import { ArmyPropsWithoutSelect } from "../Army";
 import { ArmySelect, PathActive } from "./Map";
-import { GridItem } from "../../data/cenario/sampleBoard";
+import { GridItem } from '../../data/types';
 import { STORE } from "../../data/store";
 
 interface Props {

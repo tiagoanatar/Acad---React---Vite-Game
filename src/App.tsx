@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 // Routes
 import { WaveTest } from "./components/WaveTest";
 import { Main } from "./components/Main";

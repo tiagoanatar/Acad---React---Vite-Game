@@ -19,3 +19,13 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.army-drawer-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}

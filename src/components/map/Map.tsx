@@ -1,7 +1,6 @@
 import { useState, useMemo, Dispatch, SetStateAction } from "react";
 import { STORE } from "../../data/store";
-import { ArmyType } from "../../data/types";
-import { GridItem } from "../../data/cenario/sampleBoard";
+import { GridItem } from '../../data/types';
 import { calculateDistance } from "../../utils";
 import { Army, ArmyPropsWithoutSelect } from "../Army";
 import { Base } from "../Base";
@@ -127,7 +126,7 @@ export const Map = ({ map, setMap, armies }: Props) => {
         } else if (grid[i].base.length) {
           terrainCost = 99;
         }
-        grid[i].rangeValue = distance + terrainCost;
+        grid[i].rangeValue = distance + terrainCost + (distance * terrainCost);
       }
 
       // Convert array in order to make easy transform its values
