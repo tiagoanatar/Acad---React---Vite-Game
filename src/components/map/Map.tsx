@@ -2,7 +2,7 @@ import { useState, useMemo, Dispatch, SetStateAction } from "react";
 import { STORE } from "../../data/store";
 import { GridItem } from '../../data/types';
 import { calculateDistance } from "../../utils";
-import { Army, ArmyPropsWithoutSelect } from "../Army";
+import { Army, ArmyPropsWithoutSelect, ArmySelect } from "../Army";
 import { Base } from "../Base";
 import { MapRange } from "./MapRange";
 
@@ -13,16 +13,9 @@ interface Props {
   setArmies: Dispatch<SetStateAction<ArmyPropsWithoutSelect[][]>>;
 }
 
-export interface ArmySelect {
-  y: number;
-  x: number;
-  active: boolean;
-  copy: ArmyPropsWithoutSelect | null;
-}
-
 export interface PathActive {
-  x: number | null;
   y: number | null;
+  x: number | null;
 }
 
 const armySelectInitialState = {
@@ -45,7 +38,8 @@ export const Map = ({ map, setMap, armies }: Props) => {
   });
 
   // Path data
-  const [path, setPath] = useState<{ y: number; x: number }[]>([]);
+  const [path, setPath] = useState<PathActive[]>([]);
+  const [isMoveActive, setIsMoveActive] = useState(false);
 
   // Current base selected data
   const [baseSelect, setBaseSelect] = useState({ y: 0, x: 0, active: false });
@@ -82,6 +76,7 @@ export const Map = ({ map, setMap, armies }: Props) => {
           y={data.y}
           x={data.x}
           index={index}
+          armySelect={armySelect}
           setArmySelect={setArmySelect}
         />
       );
@@ -205,6 +200,7 @@ export const Map = ({ map, setMap, armies }: Props) => {
             }
           }
         }
+        setPath((prev) => [pathActive, ...prev]);
       }
 
       return newArray.flat(2);
@@ -228,6 +224,7 @@ export const Map = ({ map, setMap, armies }: Props) => {
           armySelect={armySelect}
           setArmySelect={setArmySelect}
           setPathActive={setPathActive}
+          path={path}
         />
       )}
       {/* Main map */}

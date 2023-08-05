@@ -13,6 +13,7 @@ interface Props {
   y: number;
   x: number;
   index: number;
+  armySelect: ArmySelect;
   setArmySelect: Dispatch<SetStateAction<{
     y: number;
     x: number;
@@ -21,7 +22,14 @@ interface Props {
   }>>
 }
 
-export type ArmyPropsWithoutSelect = Omit<Props, "setArmySelect">;
+export type ArmyPropsWithoutSelect = Omit<Props, "setArmySelect" | "armySelect">;
+
+export interface ArmySelect {
+  y: number;
+  x: number;
+  active: boolean;
+  copy: ArmyPropsWithoutSelect | null;
+}
 
 export const Army = ({
   id,
@@ -34,47 +42,10 @@ export const Army = ({
   y,
   x,
   index,
+  armySelect,
   setArmySelect,
 }: Props) => {
   const currentLife = convertToPercentage(lifeRef, life);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const { key } = event;
-      const arrowKeys = ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"];
-      const moveAmount = 54; // Amount to move in pixels
-
-      if (arrowKeys.includes(key)) {
-        event.preventDefault(); // Prevent default arrow key behavior (scrolling)
-
-        // Calculate new position based on the pressed arrow key
-        let newY = y;
-        let newX = x;
-        switch (key) {
-          case "ArrowLeft":
-            newX -= moveAmount;
-            break;
-          case "ArrowUp":
-            newY -= moveAmount;
-            break;
-          case "ArrowRight":
-            newX += moveAmount;
-            break;
-          case "ArrowDown":
-            newY += moveAmount;
-            break;
-          default:
-            break;
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [x, y, setArmySelect]);
 
   // Select current army
   const handleArmySelection = () => {

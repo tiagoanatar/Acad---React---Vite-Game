@@ -56,7 +56,8 @@
 /* ARMY */
 
 .army {
-  position: relative;
+  position: absolute;
+  transition: top 0.5s, left 0.5s, right 0.5s, bottom 0.5s;
   z-index: 15;
 
   &:hover .life-bar {

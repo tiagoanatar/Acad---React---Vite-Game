@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, MouseEvent } from "react";
-import { ArmyPropsWithoutSelect } from "../Army";
-import { ArmySelect, PathActive } from "./Map";
+import { ArmyPropsWithoutSelect, ArmySelect } from "../Army";
+import { PathActive } from "./Map";
 import { GridItem } from '../../data/types';
 import { STORE } from "../../data/store";
 
@@ -11,6 +11,7 @@ interface Props {
   armySelect: ArmySelect;
   setArmySelect: Dispatch<SetStateAction<ArmySelect>>;
   setPathActive: Dispatch<SetStateAction<PathActive>>;
+  path: PathActive[];
 }
 
 export const MapRange = ({
@@ -20,6 +21,7 @@ export const MapRange = ({
   armySelect,
   setArmySelect,
   setPathActive,
+  path,
 }: Props) => {
   // Context menu - mouse right click
   const handleContextMenuRange = (event: { preventDefault: () => void }) => {
@@ -33,12 +35,12 @@ export const MapRange = ({
   };
 
   // Army position change
-  function handleArmyPositionChange(
+  const handleArmyPositionChange = (
     id: string,
     currentArmy: string,
     y: number,
     x: number
-  ) {
+  ) => {
     if (armySelect.active && armySelect.copy && currentArmy.length === 0) {
       const army: ArmyPropsWithoutSelect = { ...armySelect.copy };
       const updatedMap: GridItem[] = map.map((item) => {
@@ -67,10 +69,16 @@ export const MapRange = ({
     const x = Number(dataset.x);
     const y = Number(dataset.y);
     if (onRange) {
-      setPathActive({ x, y });
+      setPathActive({ y, x});
     } else {
-      setPathActive({ x: null, y: null });
+      setPathActive({ y: null, x: null });
     }
+  }
+
+  const activateMovement = (y: number, x: number) => {
+    const obj = {y, x}
+    const match = path.some(item => JSON.stringify(item) === JSON.stringify(obj));
+    alert(match);
   }
 
   return (
@@ -83,11 +91,7 @@ export const MapRange = ({
               className="grid-item"
               data-y={cell.y}
               data-x={cell.x}
-              onClick={() =>
-                cell.army.length === 0 && cell.base.length === 0
-                  ? handleArmyPositionChange(cell.id, cell.army, cell.y, cell.x)
-                  : null
-              }
+              onClick={() => activateMovement(cell.y, cell.x)}
               onMouseOver={(e) =>
                 activatePath(
                   !!armySelect.copy &&
