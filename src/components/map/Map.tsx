@@ -76,8 +76,9 @@ export const Map = ({ map, setMap, armies }: Props) => {
           y={data.y}
           x={data.x}
           index={index}
-          armySelect={armySelect}
           setArmySelect={setArmySelect}
+          isMoveActive={isMoveActive}
+          path={path}
         />
       );
     } else {
@@ -214,7 +215,8 @@ export const Map = ({ map, setMap, armies }: Props) => {
     <div className="main-container">
       Army Select: {JSON.stringify(armySelect)} <br />
       pathActive: {JSON.stringify(pathActive)} <br />
-      path: {JSON.stringify(path)}
+      path: {JSON.stringify(path)} <br />
+      move: {JSON.stringify(isMoveActive)}
       {/* Army range display */}
       {armySelect.active && (
         <MapRange
@@ -225,6 +227,7 @@ export const Map = ({ map, setMap, armies }: Props) => {
           setArmySelect={setArmySelect}
           setPathActive={setPathActive}
           path={path}
+          setIsMoveActive={setIsMoveActive}
         />
       )}
       {/* Main map */}

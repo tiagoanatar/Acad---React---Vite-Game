@@ -12,6 +12,7 @@ interface Props {
   setArmySelect: Dispatch<SetStateAction<ArmySelect>>;
   setPathActive: Dispatch<SetStateAction<PathActive>>;
   path: PathActive[];
+  setIsMoveActive: Dispatch<SetStateAction<boolean>>;
 }
 
 export const MapRange = ({
@@ -22,6 +23,7 @@ export const MapRange = ({
   setArmySelect,
   setPathActive,
   path,
+  setIsMoveActive,
 }: Props) => {
   // Context menu - mouse right click
   const handleContextMenuRange = (event: { preventDefault: () => void }) => {
@@ -78,7 +80,7 @@ export const MapRange = ({
   const activateMovement = (y: number, x: number) => {
     const obj = {y, x}
     const match = path.some(item => JSON.stringify(item) === JSON.stringify(obj));
-    alert(match);
+    setIsMoveActive(match);
   }
 
   return (
