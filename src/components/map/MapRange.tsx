@@ -86,8 +86,29 @@ export const MapRange = ({
       (item) => JSON.stringify(item) === JSON.stringify(obj)
     );
     setIsMoveActive(match);
+    // move army from old to new position
     if (match) {
-      
+      const newMap = [...map];
+      const pathLast = path[path.length - 1];
+      const pathFirst = path[0];
+      const currentIndex = newMap.findIndex(
+        (item) => item.y === pathLast.y && item.x === pathLast.x
+      );
+      const newIndex = newMap.findIndex(
+        (item) => item.y === pathFirst.y && item.x === pathFirst.x
+      );
+      const armyId = newMap[currentIndex].army;
+      newMap[newIndex].army = armyId;
+      newMap[currentIndex].army = "";
+      setMap(newMap);
+      setPathActive({ y: null, x: null });
+      setPath([]);
+      setArmySelect({
+        y: 0,
+        x: 0,
+        active: false,
+        copy: null,
+      });
     }
   };
 
