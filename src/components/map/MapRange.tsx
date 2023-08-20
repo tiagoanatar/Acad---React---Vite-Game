@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, MouseEvent } from "react";
 import { ArmyPropsWithoutSelect, ArmySelect } from "../Army";
 import { PathActive } from "./Map";
-import { GridItem } from '../../data/types';
+import { GridItem } from "../../data/types";
 import { STORE } from "../../data/store";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   armySelect: ArmySelect;
   setArmySelect: Dispatch<SetStateAction<ArmySelect>>;
   setPathActive: Dispatch<SetStateAction<PathActive>>;
+  setPath: Dispatch<SetStateAction<PathActive[]>>;
   path: PathActive[];
   setIsMoveActive: Dispatch<SetStateAction<boolean>>;
 }
@@ -22,6 +23,7 @@ export const MapRange = ({
   armySelect,
   setArmySelect,
   setPathActive,
+  setPath,
   path,
   setIsMoveActive,
 }: Props) => {
@@ -34,6 +36,7 @@ export const MapRange = ({
       active: false,
       copy: null,
     });
+    setPath([]);
   };
 
   // Army position change
@@ -64,24 +67,29 @@ export const MapRange = ({
       });
       setMap(updatedMap);
     }
-  }
+  };
 
   function activatePath(onRange: boolean, e: MouseEvent<HTMLDivElement>) {
     const { dataset } = e.currentTarget;
     const x = Number(dataset.x);
     const y = Number(dataset.y);
     if (onRange) {
-      setPathActive({ y, x});
+      setPathActive({ y, x });
     } else {
       setPathActive({ y: null, x: null });
     }
   }
 
   const activateMovement = (y: number, x: number) => {
-    const obj = {y, x}
-    const match = path.some(item => JSON.stringify(item) === JSON.stringify(obj));
+    const obj = { y, x };
+    const match = path.some(
+      (item) => JSON.stringify(item) === JSON.stringify(obj)
+    );
     setIsMoveActive(match);
-  }
+    if (match) {
+      
+    }
+  };
 
   return (
     <div className="grid-container-over-a">

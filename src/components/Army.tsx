@@ -15,16 +15,21 @@ interface Props {
   x: number;
   index: number;
   isMoveActive: boolean;
-  setArmySelect: Dispatch<SetStateAction<{
-    y: number;
-    x: number;
-    active: boolean;
-    copy: ArmyPropsWithoutSelect | null;
-  }>>
+  setArmySelect: Dispatch<
+    SetStateAction<{
+      y: number;
+      x: number;
+      active: boolean;
+      copy: ArmyPropsWithoutSelect | null;
+    }>
+  >;
   path: PathActive[];
 }
 
-export type ArmyPropsWithoutSelect = Omit<Props, "setArmySelect" | "isMoveActive" | "path">;
+export type ArmyPropsWithoutSelect = Omit<
+  Props,
+  "setArmySelect" | "isMoveActive" | "path"
+>;
 
 export interface ArmySelect {
   y: number;
@@ -66,23 +71,37 @@ export const Army = ({
         rank,
         y,
         x,
-        index
+        index,
       },
     });
   };
 
   // Move direction
-  const moveDirectionHandler = (path: PathActive) => {
-    if (){
-      
+  const moveDirectionHandler = (path: PathActive[]) => {
+    const tempPath = [...path];
+    while (tempPath.length > 0) {
+      const finalLocation = tempPath[tempPath.length - 1];
+      if (finalLocation.y && finalLocation.y > y) {
+        console.log("move up");
+      }
+      if (finalLocation.y && finalLocation.y < y) {
+        console.log("move up");
+      }
+      if (finalLocation.x && finalLocation.x > x) {
+        console.log("move right");
+      }
+      if (finalLocation.x && finalLocation.x < x) {
+        console.log("move left");
+      }
     }
-  }
+  };
 
   useEffect(() => {
-    if (isMoveActive){
-      moveDirectionHandler(path[path.length - 1])
+    if (isMoveActive && path.length > 0) {
+      //moveDirectionHandler(path);
+
     }
-  }, [isMoveActive])
+  }, [isMoveActive]);
   return (
     <div
       className={`army army-${race}-${type}`}

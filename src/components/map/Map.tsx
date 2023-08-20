@@ -226,6 +226,7 @@ export const Map = ({ map, setMap, armies }: Props) => {
           armySelect={armySelect}
           setArmySelect={setArmySelect}
           setPathActive={setPathActive}
+          setPath={setPath}
           path={path}
           setIsMoveActive={setIsMoveActive}
         />

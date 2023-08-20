@@ -43,6 +43,7 @@ export const Main = () => {
   }, [armyPositions]);
 
   console.log(map);
+  console.log("armies", armies);
   console.log(armyPositions);
 
   // Bases
