@@ -14,6 +14,8 @@ interface Props {
   setPath: Dispatch<SetStateAction<PathActive[]>>;
   path: PathActive[];
   setIsMoveActive: Dispatch<SetStateAction<boolean>>;
+  armies: ArmyPropsWithoutSelect[][];
+  setArmies: Dispatch<SetStateAction<ArmyPropsWithoutSelect[][]>>;
 }
 
 export const MapRange = ({
@@ -26,6 +28,8 @@ export const MapRange = ({
   setPath,
   path,
   setIsMoveActive,
+  setArmies,
+  armies,
 }: Props) => {
   // Context menu - mouse right click
   const handleContextMenuRange = (event: { preventDefault: () => void }) => {
@@ -86,7 +90,7 @@ export const MapRange = ({
       (item) => JSON.stringify(item) === JSON.stringify(obj)
     );
     setIsMoveActive(match);
-    // move army from old to new position
+    // Move army from old to new position
     if (match) {
       const newMap = [...map];
       const pathLast = path[path.length - 1];
@@ -109,6 +113,18 @@ export const MapRange = ({
         active: false,
         copy: null,
       });
+      // Update army list
+      const newArmyList = [...armies];
+      for (const sublist of newArmyList) {
+        for (const item of sublist) {
+          if (item.id === armyId) {
+            item.x = x;
+            item.y = y;
+            return;
+          }
+        }
+      }
+      setArmies([...newArmyList]);
     }
   };
 

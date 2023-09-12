@@ -25,7 +25,7 @@ const armySelectInitialState = {
   copy: null,
 };
 
-export const Map = ({ map, setMap, armies }: Props) => {
+export const Map = ({ map, setMap, armies, setArmies }: Props) => {
   // Current army selected data
   const [armySelect, setArmySelect] = useState<ArmySelect>({
     ...armySelectInitialState,
@@ -229,6 +229,8 @@ export const Map = ({ map, setMap, armies }: Props) => {
           setPath={setPath}
           path={path}
           setIsMoveActive={setIsMoveActive}
+          armies={armies}
+          setArmies={setArmies}
         />
       )}
       {/* Main map */}

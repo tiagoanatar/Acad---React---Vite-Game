@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { Drawer } from "@mantine/core";
 import { generateMap } from "../data/cenario/sampleBoard";
 // Types
 import { Turn } from "../data/types";
