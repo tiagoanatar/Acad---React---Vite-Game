@@ -1,5 +1,5 @@
 // Main combat map size
-export const STORE = {
+export const COREVALUES = {
     combatMap: {
         size: 20
     },

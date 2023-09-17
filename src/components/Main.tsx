@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { generateMap } from "../data/cenario/sampleBoard";
 // Types
 import { Turn } from "../data/types";
-// Army state
+// Army initial state
 import { initialArmyState } from "../data/initialArmyState";
 // Components
 import { Map } from "./map/Map";
@@ -11,7 +11,7 @@ import { Header } from "./layout/Header";
 import { DrawerArmy } from "./layout/DrawerArmy";
 
 export const Main = () => {
-  // Prevent page refresh with the G5 by mistake
+  // Prevent page refresh with the G5 by mistake *** uncomment latter
   // useEffect(() => {
   //   const handleBeforeUnload = (event: BeforeUnloadEvent) => {
   //     event.preventDefault();
@@ -36,10 +36,6 @@ export const Main = () => {
 
   // Armies
   const [armies, setArmies] = useState(armyList);
-
-  useEffect(() => {
-    // setArmies(initialArmyState(armyPositions || {y0: 0, x0: 0, y1: 1, x1: 1}))
-  }, [armyPositions]);
 
   console.log(map);
   console.log("armies", armies);

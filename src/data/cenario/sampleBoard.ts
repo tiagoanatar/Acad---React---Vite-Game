@@ -1,5 +1,5 @@
 import { generateWave, FinalCell } from './waveFunctionA';
-import { STORE } from '../store';
+import { COREVALUES } from '../consts';
 import { GridItem } from '../types';
 import { InitialPosition } from "../initialArmyState";
 
@@ -25,7 +25,7 @@ const map: GridItem[][] = [];
 const basesPossibleTerrain: GridItem[] = [];
 
 const waveData = generateWave();
-const size = STORE.combatMap.size;
+const size = COREVALUES.combatMap.size;
 
 // Exported first armies position
 let armyPositions: InitialPosition;

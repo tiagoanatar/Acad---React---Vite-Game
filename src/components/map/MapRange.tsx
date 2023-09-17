@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, MouseEvent } from "react";
 import { ArmyPropsWithoutSelect, ArmySelect } from "../Army";
 import { PathActive } from "./Map";
 import { GridItem } from "../../data/types";
-import { STORE } from "../../data/store";
+import { COREVALUES } from "../../data/consts";
 
 interface Props {
   rangeMap: GridItem[];
@@ -144,7 +144,7 @@ export const MapRange = ({
                   !!armySelect.copy &&
                     cell.rangeValue > 0 &&
                     cell.rangeValue <=
-                      armySelect.copy.rank + STORE.player.rangeIncrement,
+                      armySelect.copy.rank + COREVALUES.player.rangeIncrement,
                   e
                 )
               }
@@ -154,7 +154,7 @@ export const MapRange = ({
                 className={
                   armySelect.copy &&
                   cell.rangeValue <=
-                    armySelect.copy.rank + STORE.player.rangeIncrement
+                    armySelect.copy.rank + COREVALUES.player.rangeIncrement
                     ? "range-block"
                     : ""
                 }

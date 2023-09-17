@@ -1,5 +1,5 @@
 import { useState, useMemo, Dispatch, SetStateAction } from "react";
-import { STORE } from "../../data/store";
+import { COREVALUES } from "../../data/consts";
 import { GridItem } from '../../data/types';
 import { calculateDistance } from "../../utils";
 import { Army, ArmyPropsWithoutSelect, ArmySelect } from "../Army";
@@ -127,7 +127,7 @@ export const Map = ({ map, setMap, armies, setArmies }: Props) => {
 
       // Convert array in order to make easy transform its values
       const newArray = [];
-      const size = STORE.combatMap.size;
+      const size = COREVALUES.combatMap.size;
       for (let i = 0; i < grid.length; i += size) {
         newArray.push(grid.slice(i, i + size));
       }

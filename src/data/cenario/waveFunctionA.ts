@@ -1,4 +1,4 @@
-import { STORE } from '../store';
+import { COREVALUES } from '../consts';
 
 export interface FinalCell {
   type: string;
@@ -18,8 +18,8 @@ export interface Map {
   collapse: boolean;
 }
 
-const MAP_SIZE_X = STORE.combatMap.size;
-const MAP_SIZE_Y = STORE.combatMap.size;
+const MAP_SIZE_X = COREVALUES.combatMap.size;
+const MAP_SIZE_Y = COREVALUES.combatMap.size;
 const map: Map[][] = []
 
 const map_b: Map[][] = []; // complex structures

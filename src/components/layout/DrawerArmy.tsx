@@ -9,12 +9,13 @@ export interface Props {
 
 export const DrawerArmy = ({ opened, close, armies }: Props) => {
   return (
-    <Drawer opened={opened} onClose={close} position="left">
+    <Drawer size={600} opened={opened} onClose={close} position="left">
       <div className="army-drawer-list">
         <div style={{ height: "50px", width: "50px" }}></div>
         <div>race</div>
         <div>life</div>
         <div>type</div>
+        <div>pos y/x</div>
       </div>
       {armies[0].length > 0 &&
         armies[0].map((item) => {
@@ -27,6 +28,7 @@ export const DrawerArmy = ({ opened, close, armies }: Props) => {
               <div>{item.race}</div>
               <div>{item.life}</div>
               <div>{item.type}</div>
+              <div>{item.y}/{item.x}</div>
             </div>
           );
         })}
