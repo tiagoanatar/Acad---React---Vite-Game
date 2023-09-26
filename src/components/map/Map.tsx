@@ -244,6 +244,7 @@ export const Map = ({ map, setMap, armies, setArmies }: Props) => {
             >
               {/* Army render */}
               {placeArmy(cell.army, index)}
+              {/* Base render */}
               {cell.base.length > 0 && (
                 <Base
                   id={cell.base[0].id}

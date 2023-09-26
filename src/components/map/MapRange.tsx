@@ -115,8 +115,8 @@ export const MapRange = ({
       });
       // Update army list
       const newArmyList = [...armies];
-      for (const sublist of newArmyList) {
-        for (const item of sublist) {
+      for (const subList of newArmyList) {
+        for (const item of subList) {
           if (item.id === armyId) {
             item.x = x;
             item.y = y;
