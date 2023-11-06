@@ -42,13 +42,14 @@ export const Main = () => {
   console.log(armyPositions);
 
   // Bases
-  function initialValue() {
-    return {
-      player: [],
-      enemy: [],
-    };
-  }
-  const [bases, setBases] = useState(initialValue());
+  // function initialValue() {
+  //   return {
+  //     player: [],
+  //     enemy: [],
+  //   };
+  // }
+  
+  // const [bases, setBases] = useState(initialValue());
 
   const [opened, { open, close }] = useDisclosure(false);
 

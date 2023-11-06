@@ -66,15 +66,7 @@ export const Map = ({ map, setMap, armies, setArmies }: Props) => {
       }
       return (
         <Army
-          id={data.id}
-          faction={data.faction}
-          race={data.race}
-          life={data.life}
-          lifeRef={data.lifeRef}
-          rank={data.rank}
-          type={data.type}
-          y={data.y}
-          x={data.x}
+          {...data}
           index={index}
           setArmySelect={setArmySelect}
           isMoveActive={isMoveActive}
@@ -97,6 +89,7 @@ export const Map = ({ map, setMap, armies, setArmies }: Props) => {
       if (!armySelect.copy) return;
 
       stack.push(armySelect.copy.index);
+
       // Mark player position as already checked
       grid[armySelect.copy.index].rangeCheck = true;
 
@@ -247,15 +240,7 @@ export const Map = ({ map, setMap, armies, setArmies }: Props) => {
               {/* Base render */}
               {cell.base.length > 0 && (
                 <Base
-                  id={cell.base[0].id}
-                  faction={cell.base[0].faction}
-                  race={cell.base[0].race}
-                  life={cell.base[0].life}
-                  lifeRef={cell.base[0].lifeRef}
-                  rank={cell.base[0].rank}
-                  type={cell.base[0].type}
-                  y={cell.base[0].y}
-                  x={cell.base[0].x}
+                  {...cell.base[0]}
                   setBaseSelect={setBaseSelect}
                 />
               )}
