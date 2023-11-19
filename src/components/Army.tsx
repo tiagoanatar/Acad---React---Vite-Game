@@ -1,6 +1,6 @@
 import { convertToPercentage } from "../utils";
 import { ArmyType } from "../data/types";
-import { useEffect, Dispatch, SetStateAction } from "react";
+import { useEffect, Dispatch, SetStateAction, useRef } from "react";
 import { PathActive } from "./map/Map";
 
 interface Props {
@@ -53,6 +53,8 @@ export const Army = ({
   setArmySelect,
   path,
 }: Props) => {
+  const element = useRef<HTMLDivElement | null>(null);
+
   const currentLife = convertToPercentage(lifeRef, life);
 
   // Select current army
@@ -102,11 +104,24 @@ export const Army = ({
 
     }
   }, [isMoveActive]);
+
+  useEffect(() => {
+    const el = element.current
+
+    if (el) {
+      el?.addEventListener('transitionend', moveDirectionHandler);
+
+      return () => {
+        el.removeEventListener('transitionend', moveDirectionHandler);
+      };
+    }
+  }, []);
   return (
     <div
       className={`army army-${race}-${type}`}
       onClick={() => handleArmySelection()}
       id={`${type}-${y}-${x}`}
+      ref={element}
     >
       <div
         style={{
